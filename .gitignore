@@ -1,0 +1,16 @@
+# --- Large Data Files ---
+*.h5
+*.anydata
+*.mat
+# *.png
+# *.csv
+
+# --- MATLAB Generated Files ---
+*.asv
+*.slxc
+*.autosave
+slprj/
+
+# --- OS Junk ---
+.DS_Store
+Thumbs.db
