@@ -1,0 +1,13 @@
+Conclusions:
+
+Hand Load: 
+The human model's right wrist took on a peak vertical load of about 145 N, which is roughly 15 kg of downward force pushing into the helper rod. This shows that during the walking cycle, a noticeable chunk of the model's total body weight was shifted away from the lower body and supported by the right arm instead.
+
+Knee Load: 
+Because the right arm was providing that extra support, the right knee only had to handle a peak vertical load of around 600 N. Compare that to the unassisted left knee, which absorbed over 1600 N during its stance phase. This asymmetry shows how effectively the helper rod took the dynamic vertical weight off the assisted leg.
+
+Knee Torque: 
+Shifting all that vertical weight to the hand naturally changes the biomechanical effort it takes to actually take a step. Since the rod was bearing a good portion of the load, the model's right knee only needed to generate a minimal peak flexion torque of about 8 Nm. In contrast, the unassisted left knee had to do the heavy lifting to support the body independently, generating nearly 23 Nm of torque.
+
+Lateral Shift: 
+Relying on support from just one side with the helper rod also redirects a lot of force horizontally. The data points to a major lateral force hitting a peak of -800 N on the right ankle. This suggests the model had to absorb some intense side-to-side forces just to keep from tipping over while shifting weight onto the cane.

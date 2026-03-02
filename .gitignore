@@ -3,6 +3,7 @@
 *.anydata
 *.mat
 test_code.m
+find_force_data.m
 # *.png
 # *.csv
 
