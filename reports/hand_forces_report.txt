@@ -1,0 +1,15 @@
+=================================================
+       UPPER BODY ASSISTANCE REPORT
+=================================================
+
+[ELBOW JOINT]
+  * Max Flexion Torque:    Right:  51.95 Nm  |  Left:   0.63 Nm
+  * Max Vertical Load:     Right: 156.63 N   |  Left:   5.98 N
+
+[WRIST JOINT]
+  * Max Flexion Torque:    Right:  44.75 Nm  |  Left:   0.17 Nm
+  * Max Vertical Load:     Right: 144.36 N   |  Left:   4.45 N
+
+  NOTE: Vertical load at the wrist represents the amount of body weight
+        being supported by the walker/helper rod.
+

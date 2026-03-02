@@ -2,9 +2,9 @@
 clear; 
 clc; 
 close all;
-csv_file_right = 'interaction_joint_data.csv';
-csv_file_left  = 'interaction_joint_data_left.csv';
-report_file = 'joint_forces_report.txt';
+csv_file_right = 'data_csv/interaction_joint_data.csv';
+csv_file_left  = 'data_csv/interaction_joint_data_left.csv';
+report_file = 'reports/joint_forces_report.txt';
 if exist(csv_file_right, 'file') ~= 2 || exist(csv_file_left, 'file') ~= 2
     error('One or both CSV files not found! Run run_analysis.m first.');
 end
