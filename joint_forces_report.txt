@@ -1,9 +1,20 @@
-HIP Joint:
-  Max Flexion Torque:    20.73 Nm
-  Max Abduction Torque:  29.11 Nm
-  Max Vertical Load:     944.74 N
-KNEE Joint:
-  Max Vertical Load:     607.26 N
-ANKLE Joint:
-  Max Plantar Torque:    33.55 Nm
-  Max Lateral Force:     842.66 N
+=================================================
+       HUMAN FORCE ANALYSIS REPORT
+       Date: 01-Mar-2026
+=================================================
+
+[HIP JOINT]
+  * Max Flexion Torque:    Right:  20.73 Nm  |  Left:  13.93 Nm
+  * Max Abduction Torque:  Right:  29.11 Nm  |  Left:  45.05 Nm
+  * Max Vertical Load:     Right: 944.74 N   |  Left: 1430.69 N
+  ------------------------------------------
+
+[KNEE JOINT]
+  * Max Flexion Torque:    Right:   8.42 Nm  |  Left:  23.09 Nm
+  * Max Vertical Load:     Right: 607.26 N   |  Left: 1664.73 N
+  ------------------------------------------
+
+[ANKLE JOINT]
+  * Max Plantar Torque:    Right:  33.55 Nm  |  Left:  63.80 Nm
+  * Max Lateral Force:     Right: 842.66 N   |  Left: 265.95 N
+  ------------------------------------------
