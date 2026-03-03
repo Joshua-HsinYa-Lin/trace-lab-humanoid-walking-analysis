@@ -23,7 +23,7 @@ if exist(csv_file_right, 'file') ~= 2 || exist(csv_file_left, 'file') ~= 2
 end
 
 % Import Data
-disp('Loading upper body data...');
+disp('Loading hand data...');
 data_R = readtable(csv_file_right);
 data_L = readtable(csv_file_left);
 time = data_R.Time; 
@@ -117,28 +117,27 @@ end
 get_peak = @(v) max(abs(v));
 
 % Write Header
-fprintf(fptr, '=================================================\n');
-fprintf(fptr, '       UPPER BODY ASSISTANCE REPORT\n');
-fprintf(fptr, '=================================================\n\n');
+fprintf(fptr, '==================================================\n');
+fprintf(fptr, '              HAND ASSISTANCE REPORT\n');
+fprintf(fptr, '==================================================\n\n');
 
 % ELBOW JOINT
-fprintf(fptr, '[ELBOW JOINT]\n');
-fprintf(fptr, '  * Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
+fprintf(fptr, 'ELBOW JOINT\n');
+fprintf(fptr, 'Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_ElbowFlexion), get_peak(data_L.Moment_ElbowFlexion));
-fprintf(fptr, '  * Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
+fprintf(fptr, 'Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
     get_peak(data_R.Force_ElbowHumeroUlnar_ProximoDistalForce), get_peak(data_L.Force_ElbowHumeroUlnar_ProximoDistalForce));
 fprintf(fptr, '\n');
+fprintf(fptr, '------------------------------------------------------------\n\n');
 
 % WRIST JOINT (CRITICAL FOR WALKER HYPOTHESIS)
-fprintf(fptr, '[WRIST JOINT]\n');
-fprintf(fptr, '  * Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
+fprintf(fptr, 'WRIST JOINT\n');
+fprintf(fptr, 'Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_WristFlexion), get_peak(data_L.Moment_WristFlexion));
-fprintf(fptr, '  * Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
+fprintf(fptr, 'Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
     get_peak(data_R.Force_WristRadioCarpal_ProximoDistalForce), get_peak(data_L.Force_WristRadioCarpal_ProximoDistalForce));
 fprintf(fptr, '\n');
-fprintf(fptr, '  NOTE: Vertical load at the wrist represents the amount of body weight\n');
-fprintf(fptr, '        being supported by the walker/helper rod.\n');
 fprintf(fptr, '\n');
 
 fclose(fptr);
-fprintf('Upper Body Report successfully written to: %s\n', report_file);
+fprintf('Hand Report successfully written to: %s\n', report_file);

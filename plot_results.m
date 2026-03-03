@@ -33,35 +33,34 @@ get_peak = @(v) max(abs(v));
 
 % Write Header
 fprintf(fptr, '=================================================\n');
-fprintf(fptr, '       HUMAN FORCE ANALYSIS REPORT\n');
-fprintf(fptr, '       Date: %s\n', datetime('today'));
+fprintf(fptr, '         HUMAN LEG FORCE ANALYSIS REPORT\n');
 fprintf(fptr, '=================================================\n\n');
 
 % HIP JOINT
-fprintf(fptr, '[HIP JOINT]\n');
-fprintf(fptr, '  * Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
+fprintf(fptr, 'HIP JOINT\n');
+fprintf(fptr, 'Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_HipFlexion), get_peak(data_L.Moment_HipFlexion));
-fprintf(fptr, '  * Max Abduction Torque:  Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
+fprintf(fptr, 'Max Abduction Torque:  Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_HipAbduction), get_peak(data_L.Moment_HipAbduction));
-fprintf(fptr, '  * Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
+fprintf(fptr, 'Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
     get_peak(data_R.Force_Hip_ProximoDistalForce), get_peak(data_L.Force_Hip_ProximoDistalForce));
-fprintf(fptr, '  ------------------------------------------\n\n');
+fprintf(fptr, '------------------------------------------------------------\n\n');
 
 % KNEE JOINT
-fprintf(fptr, '[KNEE JOINT]\n');
-fprintf(fptr, '  * Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
+fprintf(fptr, 'KNEE JOINT\n');
+fprintf(fptr, 'Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_KneeFlexion), get_peak(data_L.Moment_KneeFlexion));
-fprintf(fptr, '  * Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
+fprintf(fptr, 'Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
     get_peak(data_R.Force_Knee_ProximoDistalForce), get_peak(data_L.Force_Knee_ProximoDistalForce));
-fprintf(fptr, '  ------------------------------------------\n\n');
+fprintf(fptr, '------------------------------------------------------------\n\n');
 
 % ANKLE JOINT
-fprintf(fptr, '[ANKLE JOINT]\n');
-fprintf(fptr, '  * Max Plantar Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
+fprintf(fptr, 'ANKLE JOINT\n');
+fprintf(fptr, 'Max Plantar Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_AnklePlantarFlexion), get_peak(data_L.Moment_AnklePlantarFlexion));
-fprintf(fptr, '  * Max Lateral Force:     Right: %6.2f N   |  Left: %6.2f N\n', ...
+fprintf(fptr, 'Max Lateral Force:     Right: %6.2f N   |  Left: %6.2f N\n', ...
     get_peak(data_R.Force_Ankle_MedioLateralForce), get_peak(data_L.Force_Ankle_MedioLateralForce));
-fprintf(fptr, '  ------------------------------------------\n');
+fprintf(fptr, '------------------------------------------------------------\n');
 
 fclose(fptr);
 fprintf("Report Written!\n");
