@@ -7,39 +7,45 @@ This project uses MATLAB to extract and analyze biomechanical force and torque d
 
 
 
-[Image of anatomical planes and directions of the human body]
+![Anatomical Planes and Directions](https://embryology.med.unsw.edu.au/embryology/images/0/04/Human-anatomical-planes.jpg)
 
 
-Because AnyBody exports data using anatomical reference frames, here is a simple translation guide for the variables used in the plots and reports.
+AnyBody exports data using anatomical reference frames (as shown in the image), here is a simple guide for the variables used in the plots and reports.
 
-**The Actors**
+**Actors**
 * **Follower:** The human model receiving assistance and leaning on the rod.
 * **Helper:** The human model providing support.
 * **Helper Right / Helper Left:** The specific arm of the Helper being analyzed.
 
-**Wrist Forces (Arm Data)**
+**Biomechanical Terms**
+* **Flexion:** Bending a joint to decrease the angle between bones. For example, bending the knee or elbow during a walking stride.
+* **Abduction:** Moving a limb away from the center line of the body. For example, stepping outward or raising an arm laterally to balance.
+* **Bearing:** Supporting a load or body weight against gravity.
+* **Load:** The external physical weight or force applied to a structure or joint. In this project, it represents the follower body weight forces that the helper supports.
+* **Torque:** The rotational twisting force around a joint axis. This represents the actual muscle effort required to bend a knee or stabilize a hip under a load.
+* **Push:** A force directed away from the body. In this interaction, this represents the helper accelerating the follower forward.
+* **Pull:** A force directed toward the body. In this interaction, this represents the helper decelerating the follower backward.
 
-
-
-* **ProximoDistal Force (Vertical Lift):** Force traveling along the length of the arm. In this walking task, this represents the Up/Down weight bearing force holding the Follower up.
-* **DorsoVolar Force (Push/Pull):** Force traveling from the back of the hand through the palm. This represents the Forward/Backward forces of pacing and towing the Follower.
-* **Radial Force (Lateral Balance):** Force traveling side to side across the wrist joint. This represents the Left/Right stabilization preventing the Follower from tipping over.
+**Hand Forces (Arm Data)**
+* **ProximoDistal Force (Vertical Lift / Load):** Force traveling along the length of the upper arm. In this walking task, this represents the up / down weight bearing force holding the follower up.
+* **DorsoVolar Force (Horizontal Push / Pull):** Force traveling from the back of the hand through the palm. This represents the forward / backward forces exerted on the Follower.
+* **Radial Force (Lateral Balance):** Force traveling side to side across the wrist joint. This represents the left /right stabilization preventing the follower from tipping over.
 
 **Ankle Forces (Leg Data)**
 * **ProximoDistal Force:** The vertical force traveling up the leg from the ground.
-* **AnteroPosterior Force:** The forward and backward braking and accelerating forces during a footstep.
-* **MedioLateral Force:** The side to side balancing forces on the ankle.
+* **AnteroPosterior Force:** The forward and backward accelerating and decelerating forces during a footstep.
+* **MedioLateral Force:** The side to side rotational balancing forces on the ankle.
 
 ## Folders
 
-* `/`: The MATLAB scripts stay here.
-* `/data_csv/`: The scripts put extracted force and moment data files (.csv) here.
-* `/figures/`: The scripts put generated interaction plots (.png) here.
-* `/reports/`: The scripts put text summaries and joint force reports (.txt) here.
+* `/`: The MATLAB scripts.
+* `/data_csv/`: The extracted force and moment data files. (.csv)
+* `/figures/`: The generated interaction plots. (.png)
+* `/reports/`: The text summaries. (.txt)
 
 ## Setup
 
-Place the following AnyBody inverse dynamics simulation files in the root directory to run the analysis:
+Place the AnyBody inverse dynamics simulation files in the root directory to run the analysis. Change the file name definitions in the script declaration sections if the file name is different. For this project we have the files name as follows:
 
 * `GRF_FullBody_IC_walker_WL_helper_ground_walk_w_rod_03_InverseDynamicStudy.anydata.h5`
 * `GRF_FullBody_IC_walker_WL_helper_ground_walk_w_rod_03_MarkerTracking.anydata.h5`
@@ -60,26 +66,30 @@ Place the following AnyBody inverse dynamics simulation files in the root direct
 * Run `plot_follower.m` to overlay follower forces against the helper hands.
 * Run `plot_GRF.m` to compare external ground forces against internal ankle joint loads.
 * Run `plot_single.m` to identify abnormal force spikes by comparing the interaction model to the single person baseline.
+* Run `plot_GRFvsHOG.m` to compare the GRF prediction of leg forces and HandOfGod forces.
 
-## Notes
+## Key Findings Summary
 
-1. On the validity of interaction forces:
-The interaction data shows extreme lateral forces of over 350 N and vertical loads of 145 N on the helper arm. While this force is within human's capability, it is very high and it is unlikely for human to sustain it over an entire experimental period. This abnormality suggests that the motion capture markers from the two individuals might potentially be mixed up during the recording, causing the simulation to combine both people's movements and weights into a single person.
+**1. Validity of Interaction Forces**
+The helper arm sustained extreme loads of 145N vertically and 350N laterally. Sustaining this over an entire walking cycle is highly improbable. This suggests that the motion capture markers from the two subjects were possibly mixed up during recording.
 
-2. On the ground reaction force predictions:
-The ground reaction forces predicted by the simulation agrees with the internal leg joint forces extracted from the human model. The data shows a clear relationship and gap between the GRF and the internal ankle loading. This physical alignment proves that the underlying physics engine of the simulation is calculating correctly and producing valid biomechanical results.
+**2. Ground Reaction Force Accuracy**
+The predicted GRF tightly aligns with the internal ankle loading. This gap between external impact and internal loading proves the simulation physics engine is calculating correctly.
 
-3. On the comparison with the single person walk:
-The assisted interaction model showed massive force spikes in the right arm and the unassisted single person model didn't. Because the single person was not holding a heavy payload or a helper rod during their walk, their arm forces should naturally be near zero, while the assisted helper should have force spikes because of the interaction forces. This suggests that the general force fluctuations simulated by AnyBody might be correct but the magnitude is questionable.
+**3. Assisted vs Single Person Walk**
+The single person baseline correctly showed near zero arm forces, whereas the assisted model showed massive spikes. This indicates the simulation correctly captures the interaction force trends, even though the final magnitudes are exaggerated.
 
-4. On the weight loading of the right hand: 
-The human model's right wrist has a peak vertical load of about 145 N, which is roughly 15 kg of downward force pushing into the helper rod. This shows that during the walking cycle, a good amount of the model's total body weight was shifted away from the lower body (the legs) and supported by the right arm instead.
+**4. Hand Weight Loading**
+The right wrist absorbed a 145N (~15kg) peak vertical load. This shows that a substantial body weight was shifted away from the legs and supported by the helper. However, the magnitude is questionable.
 
-5. On the loading of the right knee: 
-Because the right arm was providing that extra support, the right knee only had to handle a peak vertical load of around 600 N. Compare that to the unassisted left knee, which absorbed over 1600 N during its stance phase. This asymmetry shows how the helper rod took the dynamic vertical weight off the assisted leg.
+**5. Asymmetric Knee Loading**
+Because the right arm provided extra support, the right knee only handled a 600N peak vertical load. The unassisted left knee absorbed over 1600N. This assymetry shows that helper took the vertical weight off the assisted leg.
 
-6. On the right knee torque: 
-Shifting all an amount of vertical weight to the hand changes the effort it takes to take a step. Since the rod was bearing a good portion of the load, the model's right knee only needed to generate a minimal peak flexion torque of about 8 Nm. In contrast, the unassisted left knee had to support the body independently and generates nearly 23 Nm of torque.
+**6. Knee Torque Reduction**
+By shifting weight to the hand, the effort required to walk decreased massively. The right knee only needed 8Nm of peak torque, compared to 23Nm for the independent left knee.
 
-7. On the body lateral shift mechanism: 
-Relying on support from just one side with the helper rod also redirects a lot of force horizontally. The data show that a major lateral force hitting a peak of -800 N on the right ankle. This suggests that the model had to absorb great side-to-side forces to avoid tipping over while shifting weight onto the helper rod.
+**7. Lateral Shift Mechanism**
+Relying on asymmetrical one sided support redirects massive forces horizontally. The model had to absorb -800N peak lateral force on the right ankle to avoid tipping over.
+
+**8. Hand Of God vs GRF Hypothesis**
+We tested if the Hand Of God was compensating for failed GRF predictions in AnyBody. Statistical analysis showed an R squared of 0.03 and a cosine similarity of 0.58. This low correlation shows that there isn't evidence for the compensating hypothesis.
