@@ -76,9 +76,8 @@ fprintf(fptr, 'Follower (Local Z)           | Peak: %6.2f N   | Avg: %6.2f N\n',
     get_peak(data_F.LocalForce_Z), get_avg(data_F.LocalForce_Z));
 fprintf(fptr, 'Helper Right (Radial)        | Peak: %6.2f N   | Avg: %6.2f N\n', ...
     get_peak(data_HR.Force_WristRadioCarpal_RadialForce), get_avg(data_HR.Force_WristRadioCarpal_RadialForce));
-fprintf(fptr, 'Helper Left (Radial)         | Peak: %6.2f N   | Avg: %6.2f N\n', ...
+fprintf(fptr, 'Helper Left (Radial)         | Peak: %6.2f N   | Avg: %6.2f N\n\n', ...
     get_peak(data_HL.Force_WristRadioCarpal_RadialForce), get_avg(data_HL.Force_WristRadioCarpal_RadialForce));
-fprintf(fptr, '------------------------------------------------------------\n\n');
 
 % 2. VERTICAL WEIGHT SUPPORT (Up/Down)
 fprintf(fptr, 'VERTICAL WEIGHT SUPPORT (Up/Down)\n');
@@ -86,9 +85,8 @@ fprintf(fptr, 'Follower (Local Y)           | Peak: %6.2f N   | Avg: %6.2f N\n',
     get_peak(data_F.LocalForce_Y), get_avg(data_F.LocalForce_Y));
 fprintf(fptr, 'Helper Right (ProximoDistal) | Peak: %6.2f N   | Avg: %6.2f N\n', ...
     get_peak(data_HR.Force_WristRadioCarpal_ProximoDistalForce), get_avg(data_HR.Force_WristRadioCarpal_ProximoDistalForce));
-fprintf(fptr, 'Helper Left (ProximoDistal)  | Peak: %6.2f N   | Avg: %6.2f N\n', ...
+fprintf(fptr, 'Helper Left (ProximoDistal)  | Peak: %6.2f N   | Avg: %6.2f N\n\n', ...
     get_peak(data_HL.Force_WristRadioCarpal_ProximoDistalForce), get_avg(data_HL.Force_WristRadioCarpal_ProximoDistalForce));
-fprintf(fptr, '------------------------------------------------------------\n\n');
 
 % 3. PUSH/PULL (Forward/Backward)
 fprintf(fptr, 'PUSH/PULL DYNAMICS (Forward/Backward)\n');

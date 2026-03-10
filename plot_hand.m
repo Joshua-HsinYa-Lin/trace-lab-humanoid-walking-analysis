@@ -117,9 +117,7 @@ end
 get_peak = @(v) max(abs(v));
 
 % Write Header
-fprintf(fptr, '==================================================\n');
-fprintf(fptr, '              HAND ASSISTANCE REPORT\n');
-fprintf(fptr, '==================================================\n\n');
+fprintf(fptr, 'HAND ASSISTANCE REPORT\n\n');
 
 % ELBOW JOINT
 fprintf(fptr, 'ELBOW JOINT\n');
@@ -127,8 +125,7 @@ fprintf(fptr, 'Max Flexion Torque:    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_ElbowFlexion), get_peak(data_L.Moment_ElbowFlexion));
 fprintf(fptr, 'Max Vertical Load:     Right: %6.2f N   |  Left: %6.2f N\n', ...
     get_peak(data_R.Force_ElbowHumeroUlnar_ProximoDistalForce), get_peak(data_L.Force_ElbowHumeroUlnar_ProximoDistalForce));
-fprintf(fptr, '\n');
-fprintf(fptr, '------------------------------------------------------------\n\n');
+fprintf(fptr, '\n\n');
 
 % WRIST JOINT (CRITICAL FOR WALKER HYPOTHESIS)
 fprintf(fptr, 'WRIST JOINT\n');

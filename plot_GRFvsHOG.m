@@ -1,6 +1,9 @@
 clear;
 clc;
-close all;
+
+data_grf = readtable('data_csv/grf_data.csv');
+data_f = readtable('data_csv/follower_hand_data.csv');
+report_file = 'reports/statistical_dependence.txt';close all;
 
 set(0, 'DefaultFigureColor', 'w');
 set(0, 'DefaultAxesColor', 'w');
@@ -10,10 +13,7 @@ set(0, 'DefaultAxesZColor', 'k');
 set(0, 'DefaultTextColor', 'k');
 set(0, 'DefaultLineLineWidth', 1.5);
 
-fprintf('Loading GRF and HandOfGod Data\n');
-
-data_grf = readtable('data_csv/grf_data.csv');
-data_f = readtable('data_csv/follower_hand_data.csv');
+fprintf('Loading GRF and HandOfGod Data ...\n');
 
 time = data_grf.Time;
 
@@ -38,7 +38,6 @@ legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
 fprintf('GRF vs HandOfGod plotting complete\n');
 
-% Statistical Analysis for GRF vs Hand of God linear dependency
 grf_R = data_grf.Right_Fy;
 grf_tot = data_grf.Right_Fy + data_grf.Left_Fy;
 hog_Y = data_f.LocalForce_Y;
@@ -53,15 +52,18 @@ r_tot = R_mat_tot(1,2);
 r2_tot = r_tot^2;
 cos_sim_tot = dot(grf_tot, hog_Y) / (norm(grf_tot) * norm(hog_Y));
 
-fprintf('\nSTATISTICAL DEPENDENCE\n');
-fprintf('\n');
-fprintf('RIGHT LEG GRF vs HAND OF GOD\n');
-fprintf('Correlation (r):      %6.4f\n', r_R);
-fprintf('R squared:            %6.4f\n', r2_R);
-fprintf('Cosine Similarity:    %6.4f\n', cos_sim_R);
-fprintf('\n');
-fprintf('TOTAL GRF (Right + Left) vs HAND OF GOD\n');
-fprintf('Correlation (r):      %6.4f\n', r_tot);
-fprintf('R squared:            %6.4f\n', r2_tot);
-fprintf('Cosine Similarity:    %6.4f\n', cos_sim_tot);
-fprintf('\n');
+fptr = fopen(report_file, 'w');
+fprintf(fptr, 'STATISTICAL DEPENDENCE\n');
+fprintf(fptr, '\n');
+fprintf(fptr, 'RIGHT LEG GRF vs HAND OF GOD\n');
+fprintf(fptr, 'Correlation (r):      %6.4f\n', r_R);
+fprintf(fptr, 'R squared:            %6.4f\n', r2_R);
+fprintf(fptr, 'Cosine Similarity:    %6.4f\n', cos_sim_R);
+fprintf(fptr, '\n');
+fprintf(fptr, 'TOTAL GRF (Right + Left) vs HAND OF GOD\n');
+fprintf(fptr, 'Correlation (r):      %6.4f\n', r_tot);
+fprintf(fptr, 'R squared:            %6.4f\n', r2_tot);
+fprintf(fptr, 'Cosine Similarity:    %6.4f\n', cos_sim_tot);
+fprintf(fptr, '\n');
+fclose(fptr);
+fprintf('Report successfully written to %s\n', report_file);
