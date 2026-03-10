@@ -16,7 +16,7 @@ data_leg_R = readtable('data_csv/interaction_joint_data_right.csv');
 data_leg_L = readtable('data_csv/interaction_joint_data_left.csv');
 time = data_grf.Time;
 
-fig1 = figure('Name', 'GRF vs Leg Joint Forces', 'Position', [100 100 1000 900]);
+fig1 = figure('Color', 'w', 'Name', 'GRF vs Leg Joint Forces', 'Position', [100 100 1000 900]);
 
 subplot(3,1,1);
 plot(time, data_grf.Right_Fx, 'Color', '#0072BD', 'DisplayName', 'Right Foot GRF Forward Backward'); 

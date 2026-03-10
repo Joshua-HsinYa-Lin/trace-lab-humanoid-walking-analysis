@@ -21,7 +21,7 @@ data_int_leg = readtable('data_csv/interaction_joint_data_right.csv');
 time_single = data_single_arm.Time;
 time_int = data_int_arm.Time;
 
-fig1 = figure('Name', 'Single vs Interaction Forces', 'Position', [100 100 1200 800]);
+fig1 = figure('Color', 'w', 'Name', 'Single vs Interaction Forces', 'Position', [100 100 1200 800]);
 
 subplot(2,2,1);
 plot(time_single, data_single_arm.Force_WristRadioCarpal_DorsoVolarForce, 'Color', '#0072BD', 'DisplayName', 'Single Person Arm Push Pull');

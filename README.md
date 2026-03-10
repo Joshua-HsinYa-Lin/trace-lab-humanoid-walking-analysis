@@ -3,6 +3,33 @@
 
 This project uses MATLAB to extract and analyze biomechanical force and torque data from AnyBody simulation files (.h5). The primary goal is to analyze human interaction forces during a walking task where a helper assists a follower. By evaluating lateral stabilization, vertical weight, and ground reaction forces (GRF), we also compare assisted walking against unassisted single person walking to validate the integrity of the motion capture marker data. We establish physical baselines to train humanoid robots for physical walking assistance. 
 
+## Terminology Guide
+
+
+
+[Image of anatomical planes and directions of the human body]
+
+
+Because AnyBody exports data using anatomical reference frames, here is a simple translation guide for the variables used in the plots and reports.
+
+**The Actors**
+* **Follower:** The human model receiving assistance and leaning on the rod.
+* **Helper:** The human model providing support.
+* **Helper Right / Helper Left:** The specific arm of the Helper being analyzed.
+
+**Wrist Forces (Arm Data)**
+
+
+
+* **ProximoDistal Force (Vertical Lift):** Force traveling along the length of the arm. In this walking task, this represents the Up/Down weight bearing force holding the Follower up.
+* **DorsoVolar Force (Push/Pull):** Force traveling from the back of the hand through the palm. This represents the Forward/Backward forces of pacing and towing the Follower.
+* **Radial Force (Lateral Balance):** Force traveling side to side across the wrist joint. This represents the Left/Right stabilization preventing the Follower from tipping over.
+
+**Ankle Forces (Leg Data)**
+* **ProximoDistal Force:** The vertical force traveling up the leg from the ground.
+* **AnteroPosterior Force:** The forward and backward braking and accelerating forces during a footstep.
+* **MedioLateral Force:** The side to side balancing forces on the ankle.
+
 ## Folders
 
 * `/`: The MATLAB scripts stay here.
