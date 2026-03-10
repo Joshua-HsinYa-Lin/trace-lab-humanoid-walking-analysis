@@ -137,35 +137,25 @@ end
 
 % Function to calculate Range of Motion (Max - Min)
 get_rom = @(v) max(v) - min(v);
-
-% Write Header
-fprintf(fptr, 'KINEMATICS AND RANGE OF MOTION REPORT\n\n');
-
-% HIP KINEMATICS
+fprintf(fptr, '# KINEMATICS AND RANGE OF MOTION REPORT\n\n');
 fprintf(fptr, '### HIP KINEMATICS\n\n');
-fprintf(fptr, '![Hip Flexion](../docs/hip%%20flexion.jpg)\n\n');
+fprintf(fptr, '<img src="../docs/hip%%20flexion.jpg" width="400">\n\n');
 fprintf(fptr, 'The right hip required a flexion (bending a joint to decrease the angle between bones) range of motion (ROM) (the full movement potential of a joint) of %5.2f degrees, ', get_rom(data_R.Angle_HipFlexion));
 fprintf(fptr, 'while the left hip required %5.2f degrees.\n\n', get_rom(data_L.Angle_HipFlexion));
-fprintf(fptr, '![Hip Abduction](../docs/abduction.jpg)\n\n');
+fprintf(fptr, '<img src="../docs/abduction.jpg" width="400">\n\n');
 fprintf(fptr, 'In terms of side to side stabilization, the right hip abduction (moving a limb away from the center line of the body) ROM was %5.2f degrees ', get_rom(data_R.Angle_HipAbduction));
 fprintf(fptr, 'compared to %5.2f degrees on the left side.\n\n', get_rom(data_L.Angle_HipAbduction));
-
-% KNEE KINEMATICS
 fprintf(fptr, '### KNEE KINEMATICS\n\n');
-fprintf(fptr, '![Knee Flexion](../docs/knee%%20joint%%20flexion.jpg)\n\n');
+fprintf(fptr, '<img src="../docs/knee%%20joint%%20flexion.jpg" width="400">\n\n');
 fprintf(fptr, 'The right knee traveled through a flexion (bending a joint to decrease the angle between bones) ROM of %5.2f degrees. ', get_rom(data_R.Angle_KneeFlexion));
 fprintf(fptr, 'The left knee traveled through a flexion (bending a joint to decrease the angle between bones) ROM of %5.2f degrees. ', get_rom(data_L.Angle_KneeFlexion));
 fprintf(fptr, 'This shows the difference in leg bending when utilizing the helper rod.\n\n');
-
-% ANKLE KINEMATICS
 fprintf(fptr, '### ANKLE KINEMATICS\n\n');
-fprintf(fptr, '![Ankle Plantarflexion](../docs/ankle.jpg)\n\n');
+fprintf(fptr, '<img src="../docs/ankle.jpg" width="400">\n\n');
 fprintf(fptr, 'The right ankle exhibited a plantarflexion (pointing the foot downward) ROM of %5.2f degrees. ', get_rom(data_R.Angle_AnklePlantarFlexion));
 fprintf(fptr, 'The left ankle exhibited a plantarflexion (pointing the foot downward) ROM of %5.2f degrees.\n\n', get_rom(data_L.Angle_AnklePlantarFlexion));
-
-% UPPER BODY KINEMATICS
 fprintf(fptr, '### ARM AND ROD SUPPORT KINEMATICS\n\n');
-fprintf(fptr, '![Elbow Flexion](../docs/elbow.jpg)\n\n');
+fprintf(fptr, '<img src="../docs/elbow.jpg" width="400">\n\n');
 fprintf(fptr, 'While supporting the body with the rod, the right elbow went through a flexion (bending a joint to decrease the angle between bones) ROM of %5.2f degrees, ', get_rom(data_R.Angle_ElbowFlexion));
 fprintf(fptr, 'and the right wrist went through a flexion (bending a joint to decrease the angle between bones) ROM of %5.2f degrees. ', get_rom(data_R.Angle_WristFlexion));
 fprintf(fptr, 'By contrast, the unassisted left elbow and wrist showed minimal ROM of %5.2f degrees and %5.2f degrees respectively.\n\n', get_rom(data_L.Angle_ElbowFlexion), get_rom(data_L.Angle_WristFlexion));
