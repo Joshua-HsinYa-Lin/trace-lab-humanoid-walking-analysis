@@ -117,7 +117,7 @@ fprintf(fptr, 'HAND ASSISTANCE REPORT\n\n');
 get_peak = @(v) max(abs(v));
 
 % ELBOW JOINT
-fprintf(fptr, 'ELBOW JOINT\n');
+fprintf(fptr, 'ELBOW JOINT\n\n');
 fprintf(fptr, '<img src="../docs/elbow.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Flexion Torque (Rotational force causing the joint to bend):\nRight: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_ElbowFlexion), get_peak(data_L.Moment_ElbowFlexion));
