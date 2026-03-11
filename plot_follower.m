@@ -25,7 +25,7 @@ data_HR = readtable(csv_helper_R);
 data_HL = readtable(csv_helper_L);
 time = data_F.Time; 
 
-%% Figure: human-human interaction
+%% human-human interaction
 fig1 = figure('Name', 'Full Interaction Analysis', 'Color', 'w', 'Position', [100 100 1000 900]);
 
 % X-Axis Force (Push/Pull)
@@ -57,7 +57,6 @@ title('Left/Right Interaction Forces (Lateral Stabilization)', 'Color', 'k');
 ylabel('Force (N)', 'Color', 'k'); xlabel('Time (s)', 'Color', 'k');
 grid on;
 legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
-
 set(fig1, 'InvertHardcopy', 'off'); 
 fprintf('Full interaction plotting complete!\n');
 
@@ -67,12 +66,11 @@ get_avg = @(x) mean(x);
 
 %% Write Report
 fptr = fopen(report_file, 'w');
-
 fprintf(fptr, 'INTERACTION FORCE SUMMARY\n\n');
 
 % LATERAL STABILIZATION (Left/Right)
-fprintf(fptr, 'LATERAL STABILIZATION (Left/Right)\n');
-fprintf(fptr, '<img src="../docs/hand directions.jpg" width="400">\n\n');
+fprintf(fptr, 'LATERAL STABILIZATION (Left/Right)\n\n');
+fprintf(fptr, '<img src="../docs/elbow.jpg" width="400">\n\n');
 fprintf(fptr, 'Follower (Local Z) (Side to side horizontal force)          | Peak: %6.2f N   | Avg: %6.2f N\n', ...
     get_peak(data_F.LocalForce_Z), get_avg(data_F.LocalForce_Z));
 fprintf(fptr, 'Helper Right (Radial) (Force traveling side to side across the wrist joint)       | Peak: %6.2f N   | Avg: %6.2f N\n', ...
@@ -97,7 +95,6 @@ fprintf(fptr, 'Helper Right (DorsoVolar)    | Peak: %6.2f N   | Avg: %6.2f N\n',
     get_peak(data_HR.Force_WristRadioCarpal_DorsoVolarForce), get_avg(data_HR.Force_WristRadioCarpal_DorsoVolarForce));
 fprintf(fptr, 'Helper Left (DorsoVolar)     | Peak: %6.2f N   | Avg: %6.2f N\n', ...
     get_peak(data_HL.Force_WristRadioCarpal_DorsoVolarForce), get_avg(data_HL.Force_WristRadioCarpal_DorsoVolarForce));
-
 fclose(fptr);
 fprintf('Report Written to %s!\n', report_file);
 

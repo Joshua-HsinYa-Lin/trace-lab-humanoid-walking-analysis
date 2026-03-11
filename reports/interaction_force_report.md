@@ -1,7 +1,8 @@
 INTERACTION FORCE SUMMARY
 
 LATERAL STABILIZATION (Left/Right)
-<img src="../docs/hand directions.jpg" width="400">
+
+<img src="../docs/elbow.jpg" width="400">
 
 Follower (Local Z) (Side to side horizontal force)          | Peak: 406.65 N   | Avg: -184.70 N
 Helper Right (Radial) (Force traveling side to side across the wrist joint)       | Peak: 353.78 N   | Avg: 156.48 N

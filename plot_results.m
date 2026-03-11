@@ -23,19 +23,16 @@ set(0, 'DefaultLineLineWidth', 1.5);
 
 %% Generate Text Report
 fptr = fopen(report_file, 'w');
-
 if fptr == -1
     error('Could not open report file for writing.');
 end
+fprintf(fptr, 'HUMAN LEG FORCE ANALYSIS\n\n');
 
 % Function to Find Maximum Absolute Value
 get_peak = @(v) max(abs(v));
 
-% Write Header
-fprintf(fptr, 'HUMAN LEG FORCE ANALYSIS\n\n');
-
 % HIP JOINT
-fprintf(fptr, 'HIP JOINT\n');
+fprintf(fptr, 'HIP JOINT\n\n');
 fprintf(fptr, '<img src="../docs/hip flexion.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Flexion Torque (Rotational force causing the joint to bend):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_HipFlexion), get_peak(data_L.Moment_HipFlexion));
@@ -43,17 +40,15 @@ fprintf(fptr, 'Max Abduction Torque (Rotational force moving the limb away from 
     get_peak(data_R.Moment_HipAbduction), get_peak(data_L.Moment_HipAbduction));
 fprintf(fptr, 'Max Vertical Load (Upward or downward weight bearing force):     Right: %6.2f N   |  Left: %6.2f N\n\n', ...
     get_peak(data_R.Force_Hip_ProximoDistalForce), get_peak(data_L.Force_Hip_ProximoDistalForce));
-
 % KNEE JOINT
-fprintf(fptr, 'KNEE JOINT\n');
+fprintf(fptr, 'KNEE JOINT\n\n');
 fprintf(fptr, '<img src="../docs/knee joint flexion.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Flexion Torque (Rotational force causing the joint to bend):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_KneeFlexion), get_peak(data_L.Moment_KneeFlexion));
 fprintf(fptr, 'Max Vertical Load (Upward or downward weight bearing force):     Right: %6.2f N   |  Left: %6.2f N\n', ...
     get_peak(data_R.Force_Knee_ProximoDistalForce), get_peak(data_L.Force_Knee_ProximoDistalForce));
-
 % ANKLE JOINT
-fprintf(fptr, 'ANKLE JOINT\n');
+fprintf(fptr, 'ANKLE JOINT\n\n');
 fprintf(fptr, '<img src="../docs/ankle.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Plantar Torque (Rotational force pointing the foot downward):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_AnklePlantarFlexion), get_peak(data_L.Moment_AnklePlantarFlexion));
@@ -63,7 +58,7 @@ fprintf(fptr, 'Max Lateral Force (Side to side balancing force):     Right: %6.2
 fclose(fptr);
 fprintf("Report Written!\n");
 
-%% FIGURE 1: HIP JOINT ANALYSIS
+%% HIP JOINT ANALYSIS
 fig1 = figure('Name', 'Hip Joint Analysis', 'Color', 'w', 'Position', [50 100 1200 800]);
 
 % Right Hip Torques
@@ -124,7 +119,7 @@ grid on;
 
 set(fig1, 'InvertHardcopy', 'off'); 
 
-%% FIGURE 2: KNEE JOINT ANALYSIS
+%% KNEE JOINT ANALYSIS
 fig2 = figure('Name', 'Knee Joint Analysis', 'Color', 'w', 'Position', [100 150 1200 600]);
 
 % Right Knee Torque
@@ -215,7 +210,5 @@ title('Left Ankle Lateral Force', 'Color', 'k');
 ylabel('Force (N)', 'Color', 'k'); 
 xlabel('Time (s)', 'Color', 'k'); 
 grid on;
-
 set(fig3, 'InvertHardcopy', 'off');
-
 fprintf("Graphs Plotted!\n")

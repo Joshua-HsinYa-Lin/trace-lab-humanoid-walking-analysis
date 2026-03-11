@@ -15,7 +15,7 @@ set(0, 'DefaultLineLineWidth', 1.5);
 % Define the files
 csv_file_right = 'data_csv/interaction_hand_data.csv';
 csv_file_left  = 'data_csv/interaction_hand_data_left.csv';
-report_file = 'reports/hand_forces_report.txt';
+report_file = 'reports/hand_forces_report.md';
 
 % Check if files exist
 if exist(csv_file_right, 'file') ~= 2 || exist(csv_file_left, 'file') ~= 2
@@ -28,7 +28,7 @@ data_R = readtable(csv_file_right);
 data_L = readtable(csv_file_left);
 time = data_R.Time; 
 
-%% FIGURE 1: ELBOW JOINT ANALYSIS
+%% ELBOW JOINT ANALYSIS
 fig1 = figure('Name', 'Elbow Joint Analysis', 'Color', 'w', 'Position', [50 100 1200 600]);
 
 % Right Elbow Torque
@@ -67,7 +67,7 @@ grid on;
 
 set(fig1, 'InvertHardcopy', 'off'); 
 
-%% FIGURE 2: WRIST JOINT ANALYSIS
+%% WRIST JOINT ANALYSIS
 fig2 = figure('Name', 'Wrist Joint Analysis', 'Color', 'w', 'Position', [100 150 1200 600]);
 
 % Right Wrist Torque
@@ -108,16 +108,13 @@ set(fig2, 'InvertHardcopy', 'off');
 
 %% Generate Comparative Text Report
 fptr = fopen(report_file, 'w');
-
 if fptr == -1
     error('Could not open report file for writing.');
 end
+fprintf(fptr, 'HAND ASSISTANCE REPORT\n\n');
 
 % Function to Find Maximum Absolute Value
 get_peak = @(v) max(abs(v));
-
-% Write Header
-fprintf(fptr, 'HAND ASSISTANCE REPORT\n\n');
 
 % ELBOW JOINT
 fprintf(fptr, 'ELBOW JOINT\n');
@@ -130,13 +127,11 @@ fprintf(fptr, '\n\n');
 
 % WRIST JOINT (CRITICAL FOR WALKER HYPOTHESIS)
 fprintf(fptr, 'WRIST JOINT\n');
-fprintf(fptr, '<img src="../docs/wrist.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Flexion Torque (Rotational force causing the joint to bend):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_WristFlexion), get_peak(data_L.Moment_WristFlexion));
 fprintf(fptr, 'Max Vertical Load (Upward or downward weight bearing force):     Right: %6.2f N   |  Left: %6.2f N\n', ...
     get_peak(data_R.Force_WristRadioCarpal_ProximoDistalForce), get_peak(data_L.Force_WristRadioCarpal_ProximoDistalForce));
 fprintf(fptr, '\n');
 fprintf(fptr, '\n');
-
 fclose(fptr);
 fprintf('Hand Report successfully written to: %s\n', report_file);
