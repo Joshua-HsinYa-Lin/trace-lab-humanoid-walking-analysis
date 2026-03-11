@@ -121,6 +121,7 @@ fprintf(fptr, 'HAND ASSISTANCE REPORT\n\n');
 
 % ELBOW JOINT
 fprintf(fptr, 'ELBOW JOINT\n');
+fprintf(fptr, '<img src="../docs/elbow.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Flexion Torque (Rotational force causing the joint to bend):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_ElbowFlexion), get_peak(data_L.Moment_ElbowFlexion));
 fprintf(fptr, 'Max Vertical Load (Upward or downward weight bearing force):     Right: %6.2f N   |  Left: %6.2f N\n', ...
@@ -129,6 +130,7 @@ fprintf(fptr, '\n\n');
 
 % WRIST JOINT (CRITICAL FOR WALKER HYPOTHESIS)
 fprintf(fptr, 'WRIST JOINT\n');
+fprintf(fptr, '<img src="../docs/wrist.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Flexion Torque (Rotational force causing the joint to bend):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_WristFlexion), get_peak(data_L.Moment_WristFlexion));
 fprintf(fptr, 'Max Vertical Load (Upward or downward weight bearing force):     Right: %6.2f N   |  Left: %6.2f N\n', ...

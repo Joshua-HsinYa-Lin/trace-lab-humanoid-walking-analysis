@@ -16,7 +16,7 @@ set(0, 'DefaultLineLineWidth', 1.5);
 csv_follower = 'data_csv/follower_hand_data.csv';
 csv_helper_R = 'data_csv/interaction_hand_data_right.csv'; 
 csv_helper_L = 'data_csv/interaction_hand_data_left.csv'; 
-report_file = 'reports/interaction_force_report.txt';
+report_file = 'reports/interaction_force_report.md';
 
 % Load Data
 fprintf('Loading data...\n');
@@ -70,8 +70,9 @@ fptr = fopen(report_file, 'w');
 
 fprintf(fptr, 'INTERACTION FORCE SUMMARY\n\n');
 
-% 1. LATERAL STABILIZATION (Left/Right)
+% LATERAL STABILIZATION (Left/Right)
 fprintf(fptr, 'LATERAL STABILIZATION (Left/Right)\n');
+fprintf(fptr, '<img src="../docs/hand directions.jpg" width="400">\n\n');
 fprintf(fptr, 'Follower (Local Z) (Side to side horizontal force)          | Peak: %6.2f N   | Avg: %6.2f N\n', ...
     get_peak(data_F.LocalForce_Z), get_avg(data_F.LocalForce_Z));
 fprintf(fptr, 'Helper Right (Radial) (Force traveling side to side across the wrist joint)       | Peak: %6.2f N   | Avg: %6.2f N\n', ...
@@ -79,7 +80,7 @@ fprintf(fptr, 'Helper Right (Radial) (Force traveling side to side across the wr
 fprintf(fptr, 'Helper Left (Radial) (Force traveling side to side across the wrist joint)        | Peak: %6.2f N   | Avg: %6.2f N\n\n', ...
     get_peak(data_HL.Force_WristRadioCarpal_RadialForce), get_avg(data_HL.Force_WristRadioCarpal_RadialForce));
 
-% 2. VERTICAL WEIGHT SUPPORT (Up/Down)
+% VERTICAL WEIGHT SUPPORT (Up/Down)
 fprintf(fptr, 'VERTICAL WEIGHT SUPPORT (Up/Down)\n');
 fprintf(fptr, 'Follower (Local Y) (Upward or downward force)           | Peak: %6.2f N   | Avg: %6.2f N\n', ...
     get_peak(data_F.LocalForce_Y), get_avg(data_F.LocalForce_Y));
@@ -88,7 +89,7 @@ fprintf(fptr, 'Helper Right (ProximoDistal) (Force traveling along the length of
 fprintf(fptr, 'Helper Left (ProximoDistal) (Force traveling along the length of the arm)  | Peak: %6.2f N   | Avg: %6.2f N\n\n', ...
     get_peak(data_HL.Force_WristRadioCarpal_ProximoDistalForce), get_avg(data_HL.Force_WristRadioCarpal_ProximoDistalForce));
 
-% 3. PUSH/PULL (Forward/Backward)
+% PUSH/PULL (Forward/Backward)
 fprintf(fptr, 'PUSH/PULL DYNAMICS (Forward/Backward)\n');
 fprintf(fptr, 'Follower (Local X)           | Peak: %6.2f N   | Avg: %6.2f N\n', ...
     get_peak(data_F.LocalForce_X), get_avg(data_F.LocalForce_X));

@@ -36,6 +36,7 @@ fprintf(fptr, 'HUMAN LEG FORCE ANALYSIS\n\n');
 
 % HIP JOINT
 fprintf(fptr, 'HIP JOINT\n');
+fprintf(fptr, '<img src="../docs/hip flexion.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Flexion Torque (Rotational force causing the joint to bend):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_HipFlexion), get_peak(data_L.Moment_HipFlexion));
 fprintf(fptr, 'Max Abduction Torque (Rotational force moving the limb away from the body center):  Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
@@ -45,6 +46,7 @@ fprintf(fptr, 'Max Vertical Load (Upward or downward weight bearing force):     
 
 % KNEE JOINT
 fprintf(fptr, 'KNEE JOINT\n');
+fprintf(fptr, '<img src="../docs/knee joint flexion.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Flexion Torque (Rotational force causing the joint to bend):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_KneeFlexion), get_peak(data_L.Moment_KneeFlexion));
 fprintf(fptr, 'Max Vertical Load (Upward or downward weight bearing force):     Right: %6.2f N   |  Left: %6.2f N\n', ...
@@ -52,6 +54,7 @@ fprintf(fptr, 'Max Vertical Load (Upward or downward weight bearing force):     
 
 % ANKLE JOINT
 fprintf(fptr, 'ANKLE JOINT\n');
+fprintf(fptr, '<img src="../docs/ankle.jpg" width="400">\n\n');
 fprintf(fptr, 'Max Plantar Torque (Rotational force pointing the foot downward):    Right: %6.2f Nm  |  Left: %6.2f Nm\n', ...
     get_peak(data_R.Moment_AnklePlantarFlexion), get_peak(data_L.Moment_AnklePlantarFlexion));
 fprintf(fptr, 'Max Lateral Force (Side to side balancing force):     Right: %6.2f N   |  Left: %6.2f N\n', ...
