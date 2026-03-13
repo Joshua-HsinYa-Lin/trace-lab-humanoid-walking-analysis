@@ -20,16 +20,16 @@ time = data_grf.Time;
 fig1 = figure('Color', 'w', 'Name', 'GRF Prediction vs HandOfGod Compensation', 'Position', [100 100 1000 800]);
 
 subplot(2,1,1);
-plot(time, data_grf.Right_Fy, 'Color', '#0072BD', 'DisplayName', 'Right Foot Vertical GRF');
+plot(time, data_grf.Right_Fz, 'Color', '#0072BD', 'DisplayName', 'Right Foot Vertical GRF');
 hold on;
-plot(time, data_grf.Left_Fy, 'Color', '#77AC30', 'DisplayName', 'Left Foot Vertical GRF');
+plot(time, data_grf.Left_Fz, 'Color', '#77AC30', 'DisplayName', 'Left Foot Vertical GRF');
 title('Ground Reaction Force Prediction Vertical Load');
 ylabel('Force (N)');
 grid on;
 legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
 subplot(2,1,2);
-plot(time, data_f.LocalForce_Y, 'Color', '#D95319', 'DisplayName', 'HandOfGod Vertical Compensation');
+plot(time, data_f.Fout_Z, 'Color', '#D95319', 'DisplayName', 'HandOfGod Vertical Compensation');
 title('HandOfGod Vertical Weight Bearing Force');
 xlabel('Time (s)');
 ylabel('Force (N)');
@@ -38,9 +38,9 @@ legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
 fprintf('GRF vs HandOfGod plotting complete\n');
 
-grf_R = data_grf.Right_Fy;
-grf_tot = data_grf.Right_Fy + data_grf.Left_Fy;
-hog_Y = data_f.LocalForce_Y;
+grf_R = data_grf.Right_Fz;
+grf_tot = data_grf.Right_Fz + data_grf.Left_Fz;
+hog_Y = data_f.Fout_Z;
 
 R_mat_R = corrcoef(grf_R, hog_Y);
 r_R = R_mat_R(1,2);
