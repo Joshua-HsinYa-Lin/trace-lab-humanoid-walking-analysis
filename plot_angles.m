@@ -1,9 +1,7 @@
-%% Setup and Import
 clear;
 clc;
 close all;
 
-% GLOBAL VISUAL SETTINGS
 set(0, 'DefaultFigureColor', 'w');      
 set(0, 'DefaultAxesColor', 'w');        
 set(0, 'DefaultAxesXColor', 'k');       
@@ -12,26 +10,21 @@ set(0, 'DefaultAxesZColor', 'k');
 set(0, 'DefaultTextColor', 'k');        
 set(0, 'DefaultLineLineWidth', 1.5);    
 
-% Define the CSV files
 csv_file_right = 'data_csv/interaction_angles_right.csv';
 csv_file_left  = 'data_csv/interaction_angles_left.csv';
 report_file = 'reports/kinematics_report.md';
 
-% Check if files exist
 if exist(csv_file_right, 'file') ~= 2 || exist(csv_file_left, 'file') ~= 2
     error('One or both CSV files not found! Run run_angles.m first.');
 end
 
-% Import Data
-disp('Loading kinematic data...');
+fprintf("Loading kinematic data...");
 data_R = readtable(csv_file_right);
 data_L = readtable(csv_file_left);
 time = data_R.Time; 
 
-%% FIGURE 1: LOWER BODY KINEMATICS
 fig1 = figure('Name', 'Leg Joint Angles', 'Color', 'w', 'Position', [50 100 1200 800]);
 
-% Right Hip Angles
 subplot(3,2,1);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_R.Angle_HipFlexion, 'Color', '#0072BD'); 
@@ -42,7 +35,6 @@ ylabel('Angle (deg)', 'Color', 'k');
 grid on;
 legend('Flexion', 'Abduction', 'Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
-% Left Hip Angles
 subplot(3,2,2);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_L.Angle_HipFlexion, 'Color', '#0072BD'); 
@@ -53,7 +45,6 @@ ylabel('Angle (deg)', 'Color', 'k');
 grid on;
 legend('Flexion', 'Abduction', 'Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
-% Right Knee Angle
 subplot(3,2,3);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_R.Angle_KneeFlexion, 'Color', '#77AC30'); 
@@ -61,7 +52,6 @@ title('Right Knee Flexion', 'Color', 'k');
 ylabel('Angle (deg)', 'Color', 'k'); 
 grid on;
 
-% Left Knee Angle
 subplot(3,2,4);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_L.Angle_KneeFlexion, 'Color', '#77AC30'); 
@@ -69,7 +59,6 @@ title('Left Knee Flexion', 'Color', 'k');
 ylabel('Angle (deg)', 'Color', 'k'); 
 grid on;
 
-% Right Ankle Angle
 subplot(3,2,5);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_R.Angle_AnklePlantarFlexion, 'Color', '#A2142F'); 
@@ -78,7 +67,6 @@ ylabel('Angle (deg)', 'Color', 'k');
 xlabel('Time (s)', 'Color', 'k'); 
 grid on;
 
-% Left Ankle Angle
 subplot(3,2,6);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_L.Angle_AnklePlantarFlexion, 'Color', '#A2142F'); 
@@ -89,10 +77,8 @@ grid on;
 
 set(fig1, 'InvertHardcopy', 'off'); 
 
-%% FIGURE 2: UPPER BODY KINEMATICS
 fig2 = figure('Name', 'Arm Joint Angles', 'Color', 'w', 'Position', [100 150 1200 600]);
 
-% Right Elbow Angle
 subplot(2,2,1);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_R.Angle_ElbowFlexion, 'Color', '#0072BD'); 
@@ -100,7 +86,6 @@ title('Right Elbow Flexion', 'Color', 'k');
 ylabel('Angle (deg)', 'Color', 'k'); 
 grid on;
 
-% Left Elbow Angle
 subplot(2,2,2);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_L.Angle_ElbowFlexion, 'Color', '#0072BD'); 
@@ -108,7 +93,6 @@ title('Left Elbow Flexion', 'Color', 'k');
 ylabel('Angle (deg)', 'Color', 'k'); 
 grid on;
 
-% Right Wrist Angle
 subplot(2,2,3);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_R.Angle_WristFlexion, 'Color', '#D95319'); 
@@ -117,7 +101,6 @@ ylabel('Angle (deg)', 'Color', 'k');
 xlabel('Time (s)', 'Color', 'k'); 
 grid on;
 
-% Left Wrist Angle
 subplot(2,2,4);
 set(gca, 'XColor', 'k', 'YColor', 'k');
 plot(time, data_L.Angle_WristFlexion, 'Color', '#D95319'); 
@@ -128,14 +111,12 @@ grid on;
 
 set(fig2, 'InvertHardcopy', 'off'); 
 
-%% Generate Humanized Text Report
 fptr = fopen(report_file, 'w');
 
 if fptr == -1
     error('Could not open report file for writing.');
 end
 
-% Function to calculate Range of Motion (Max - Min)
 get_rom = @(v) max(v) - min(v);
 fprintf(fptr, '# KINEMATICS AND RANGE OF MOTION REPORT\n\n');
 fprintf(fptr, '### HIP KINEMATICS\n\n');

@@ -12,6 +12,11 @@ This project uses MATLAB to extract and analyze biomechanical force and torque d
 
 AnyBody exports data using anatomical reference frames (as shown in the image), here is a simple guide for the variables used in the plots and reports.
 
+**Axis and Sign Conventions**
+* **Axis:** Because this project uses MoCap (.c3d) files to run inverse dynamics, the axis convention follows the same for MoCap data. In this project the +x axis points forward (anterior), the +y axis points towards the left hand side, and the +z axis points upwards.
+* **Sign Convention:** The sign convention follows the axis. For example, +z points in the upward direction, or opposed to ground.
+* **Sign Convention Around Muscle / Bone** The sign convention following a anatomical term. The + sign means acting in towards and along that axis, vice versa. For example, in hand ProximalDistal forces, + sign indicates proximal forces and the force is pointing up human arm towards the elbow / shoulder. Where as - sign indicates distal forces and is pointing away from the human body towards the fingertips.
+
 **Actors**
 * **Follower:** The human model receiving assistance and leaning on the rod.
 * **Helper:** The human model providing support.
