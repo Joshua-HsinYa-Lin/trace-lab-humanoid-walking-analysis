@@ -2,9 +2,9 @@
 clear; 
 clc;
 % Setup file paths
-inversefile = 'GRF_FullBody_IC_walker_WL_helper_ground_walk_w_rod_03_InverseDynamicStudy.anydata.h5';
-markerfile = 'GRF_FullBody_IC_walker_WL_helper_ground_walk_w_rod_03_MarkerTracking.anydata.h5';
-output_csv_right = 'data_csv/interaction_joint_data.csv';
+inversefile = 'GRF_FullBody_IC_walk_01_InverseDynamicStudy.anydata.h5';
+markerfile = 'FullBody_IC_walk_01_MarkerTracking.anydata.h5';
+output_csv_right = 'data_csv/interaction_joint_data_right.csv';
 output_csv_left  = 'data_csv/interaction_joint_data_left.csv';
 
 % Setup folders to extract

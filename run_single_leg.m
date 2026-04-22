@@ -2,7 +2,7 @@
 clear; 
 clc;
 % Setup file paths
-inversefile = 'FullBody_IC_walk_01_InverseDynamicStudy.anydata.h5';
+inversefile = 'GRF_FullBody_IC_walk_01_InverseDynamicStudy.anydata.h5';
 output_csv_right = 'data_csv/single_joint_data_right.csv';
 output_csv_left  = 'data_csv/single_joint_data_left.csv';
 

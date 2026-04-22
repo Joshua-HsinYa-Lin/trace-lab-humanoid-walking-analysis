@@ -1,7 +1,7 @@
 clear; 
 clc;
 
-inversefile = 'FullBody_IC_walk_01_InverseDynamicStudy.anydata.h5';
+inversefile = 'GRF_FullBody_IC_walk_01_InverseDynamicStudy.anydata.h5';
 output_csv_right = 'data_csv/single_joint_data_right.csv';
 output_csv_left  = 'data_csv/single_joint_data_left.csv';
 output_csv_grf   = 'data_csv/grf_data_single.csv';

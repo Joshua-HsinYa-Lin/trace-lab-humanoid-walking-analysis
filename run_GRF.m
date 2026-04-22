@@ -1,7 +1,7 @@
 clear;
 clc;
 
-inversefile = 'GRF_FullBody_IC_walker_WL_helper_ground_walk_w_rod_03_InverseDynamicStudy.anydata.h5';
+inversefile = 'GRF_FullBody_IC_walk_01_InverseDynamicStudy.anydata.h5';
 output_csv = 'data_csv/grf_data.csv';
 
 fprintf('Start Ground Reaction Force Extraction\n');
