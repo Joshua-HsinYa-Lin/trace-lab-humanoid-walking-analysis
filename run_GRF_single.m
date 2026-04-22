@@ -1,10 +1,65 @@
-clear; 
-clc;
+function run_GRF_single(inversefile, csv_dir)
 
-inversefile = 'GRF_FullBody_IC_walk_01_InverseDynamicStudy.anydata.h5';
-output_csv_right = 'data_csv/single_joint_data_right.csv';
-output_csv_left  = 'data_csv/single_joint_data_left.csv';
-output_csv_grf   = 'data_csv/grf_data_single.csv';
+output_csv_grf = fullfile(csv_dir, 'grf_data_single.csv');
+fprintf('Start Ground Reaction Force Extraction (Single)\n');
+
+possible_time_paths = {'/Output/Abscissa/t', '/Output/t', '/Output/Model/t'};
+time_data = [];
+for i = 1:length(possible_time_paths)
+    try
+        time_data = h5read(inversefile, possible_time_paths{i});
+        break; 
+    catch
+    end
+end
+
+if isempty(time_data)
+    error('Could not find Time vector in %s.', inversefile);
+end
+
+ResultsTable = table(time_data(:), 'VariableNames', {'Time'});
+
+% Use GRF Prediction paths for the Single file
+base_path_right = '/Output/_Main/EnvironmentModel/ForcePlates/GRF_Prediction_Right/';
+base_path_left  = '/Output/_Main/EnvironmentModel/ForcePlates/GRF_Prediction_Left/';
+
+try
+    ResultsTable.Plate1_Fx = squeeze(h5read(inversefile, [base_path_right, 'Fx']));
+    ResultsTable.Plate1_Fy = squeeze(h5read(inversefile, [base_path_right, 'Fy']));
+    ResultsTable.Plate1_Fz = squeeze(h5read(inversefile, [base_path_right, 'Fz']));
+    
+    % Enforce column vectors
+    ResultsTable.Plate1_Fx = ResultsTable.Plate1_Fx(:);
+    ResultsTable.Plate1_Fy = ResultsTable.Plate1_Fy(:);
+    ResultsTable.Plate1_Fz = ResultsTable.Plate1_Fz(:);
+    fprintf('   Saved GRF_Prediction_Right as Plate 1\n');
+catch ME
+    fprintf('   Right GRF Extraction Failed: %s\n', ME.message);
+end
+
+try
+    ResultsTable.Plate2_Fx = squeeze(h5read(inversefile, [base_path_left, 'Fx']));
+    ResultsTable.Plate2_Fy = squeeze(h5read(inversefile, [base_path_left, 'Fy']));
+    ResultsTable.Plate2_Fz = squeeze(h5read(inversefile, [base_path_left, 'Fz']));
+    
+    % Enforce column vectors
+    ResultsTable.Plate2_Fx = ResultsTable.Plate2_Fx(:);
+    ResultsTable.Plate2_Fy = ResultsTable.Plate2_Fy(:);
+    ResultsTable.Plate2_Fz = ResultsTable.Plate2_Fz(:);
+    fprintf('   Saved GRF_Prediction_Left as Plate 2\n');
+catch ME
+    fprintf('   Left GRF Extraction Failed: %s\n', ME.message);
+end
+
+writetable(ResultsTable, output_csv_grf);
+fprintf('GRF Single Extraction Complete -> %s\n', output_csv_grf);
+
+end
+%{
+function run_GRF_single(inversefile, csv_dir)
+output_csv_right = fullfile(csv_dir, 'single_joint_data_right.csv');
+output_csv_left  = fullfile(csv_dir, 'single_joint_data_left.csv');
+output_csv_grf   = fullfile(csv_dir, 'grf_data_single.csv');
 
 sides = {'Right', 'Left'};
 folders_to_scan = {'JointMomentMeasure', 'JointReactionForce'};
@@ -19,7 +74,6 @@ end
 
 possible_time_paths = {'/Output/Abscissa/t', '/Output/t', '/Output/Model/t'};
 time_data = [];
-time_path_found = '';
 for i = 1:length(possible_time_paths)
     try
         time_data = h5read(inversefile, possible_time_paths{i});
@@ -132,3 +186,5 @@ else
 end
 
 fprintf('\nAll Data Extraction Complete!\n');
+end
+%}

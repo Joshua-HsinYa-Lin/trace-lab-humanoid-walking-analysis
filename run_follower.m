@@ -1,18 +1,11 @@
-%% Initialization and Configuration
-clear;
-clc;
+function run_follower(inversefile, csv_dir)
+output_csv = fullfile(csv_dir, 'follower_hand_data.csv');
 
-% Setup file paths
-inversefile = 'GRF_FullBody_IC_walker_WL_helper_ground_walk_w_rod_03_InverseDynamicStudy.anydata.h5';
-output_csv = 'data_csv/follower_hand_data.csv';
-
-%% Check for File existence
 if exist(inversefile, 'file') ~= 2
     error('File not found. Please check the file path.');
 end
 fprintf('Start Follower Hand Data Extraction\n');
 
-%% Get time vector
 possible_time_paths = {'/Output/Abscissa/t', '/Output/t', '/Output/Model/t'};
 time_data = [];
 
@@ -30,7 +23,6 @@ if isempty(time_data)
 end
 ResultsTable = table(time_data, 'VariableNames', {'Time'});
 
-%% Extract Fout Forces (HandOfGod/Fout)
 fout_path = '/Output/FollowerHand/HandOfGod/Fout';
 try
     fout_data = h5read(inversefile, fout_path)';
@@ -46,7 +38,6 @@ catch ME
     fprintf('Error reading Fout Forces: %s\n', ME.message);
 end
 
-%% Extract Local Follower Forces (RefFrameOutput/F)
 force_path = '/Output/FollowerHand/HandOfGod/RefFrameOutput/F';
 try
     force_data_raw = h5read(inversefile, force_path);
@@ -64,7 +55,6 @@ catch ME
     fprintf('Error reading Local Follower Forces: %s\n', ME.message);
 end
 
-%% Extract Local Follower Moments (RefFrameOutput/M)
 moment_path = '/Output/FollowerHand/HandOfGod/RefFrameOutput/M';
 try
     moment_data_raw = h5read(inversefile, moment_path);
@@ -82,7 +72,7 @@ catch ME
     fprintf('Error reading Local Follower Moments: %s\n', ME.message);
 end
 
-%% Export to table
 fprintf('Writing Follower hand data to %s\n', output_csv);
 writetable(ResultsTable, output_csv);
 fprintf('\nFollower Data Extraction Complete\n');
+end

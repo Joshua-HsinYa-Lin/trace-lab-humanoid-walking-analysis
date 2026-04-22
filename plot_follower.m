@@ -1,6 +1,8 @@
-clear;
-clc;
-close all;
+function plot_follower(csv_dir, report_dir)
+csv_follower = fullfile(csv_dir, 'follower_hand_data.csv');
+csv_helper_R = fullfile(csv_dir, 'interaction_hand_data_right.csv'); 
+csv_helper_L = fullfile(csv_dir, 'interaction_hand_data_left.csv'); 
+report_file = fullfile(report_dir, 'interaction_force_report.md');
 
 set(0, 'DefaultFigureColor', 'w');      
 set(0, 'DefaultAxesColor', 'w');        
@@ -9,11 +11,6 @@ set(0, 'DefaultAxesYColor', 'k');
 set(0, 'DefaultAxesZColor', 'k');       
 set(0, 'DefaultTextColor', 'k');        
 set(0, 'DefaultLineLineWidth', 1.5);    
-
-csv_follower = 'data_csv/follower_hand_data.csv';
-csv_helper_R = 'data_csv/interaction_hand_data_right.csv'; 
-csv_helper_L = 'data_csv/interaction_hand_data_left.csv'; 
-report_file = 'reports/interaction_force_report.md';
 
 fprintf('Loading data...\n');
 data_F = readtable(csv_follower);
@@ -84,3 +81,5 @@ fprintf(fptr, 'Helper Left (DorsoVolar)\nPeak: %6.2f N   | Avg: %6.2f N\n', ...
     get_peak(data_HL.Force_WristRadioCarpal_DorsoVolarForce), get_avg(data_HL.Force_WristRadioCarpal_DorsoVolarForce));
 fclose(fptr);
 fprintf('Report Written to %s!\n', report_file);
+
+end

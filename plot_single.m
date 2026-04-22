@@ -1,6 +1,8 @@
-clear;
-clc;
-close all;
+function plot_single(csv_dir)
+data_single_arm = readtable(fullfile(csv_dir, 'single_hand_data_right.csv'));
+data_single_leg = readtable(fullfile(csv_dir, 'single_joint_data_right.csv'));
+data_int_arm = readtable(fullfile(csv_dir, 'interaction_hand_data_right.csv'));
+data_int_leg = readtable(fullfile(csv_dir, 'interaction_joint_data_right.csv'));
 
 set(0, 'DefaultFigureColor', 'w');
 set(0, 'DefaultAxesColor', 'w');
@@ -12,16 +14,10 @@ set(0, 'DefaultLineLineWidth', 1.5);
 
 fprintf('Loading Single Person and Interaction Data\n');
 
-data_single_arm = readtable('data_csv/single_hand_data_right.csv');
-data_single_leg = readtable('data_csv/single_joint_data_right.csv');
-
-data_int_arm = readtable('data_csv/interaction_hand_data_right.csv');
-data_int_leg = readtable('data_csv/interaction_joint_data_right.csv');
-
 time_single = data_single_arm.Time;
 time_int = data_int_arm.Time;
 
-fig1 = figure('Color', 'w', 'Name', 'Single vs Interaction Forces', 'Position', [100 100 1200 800]);
+figure('Color', 'w', 'Name', 'Single vs Interaction Forces', 'Position', [100 100 1200 800]);
 sgtitle("Helper vs Single Person Walking Muscle Forces", 'Color', 'k');
 subplot(2,2,1);
 plot(time_single, data_single_arm.Force_WristRadioCarpal_DorsoVolarForce, 'Color', '#0072BD', 'DisplayName', 'Single Person Arm Push Pull');
@@ -64,3 +60,5 @@ grid on;
 legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
 fprintf('Single vs Interaction plotting complete\n');
+
+end

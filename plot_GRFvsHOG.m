@@ -1,10 +1,7 @@
-clear;
-clc;
-close all;
-
-data_grf = readtable('data_csv/grf_data.csv');
-data_f = readtable('data_csv/follower_hand_data.csv');
-report_file = 'reports/statistical_dependence.txt';
+function plot_GRFvsHOG(csv_dir, report_dir)
+data_grf = readtable(fullfile(csv_dir, 'grf_data.csv'));
+data_f = readtable(fullfile(csv_dir, 'follower_hand_data.csv'));
+report_file = fullfile(report_dir, 'statistical_dependence.txt');
 
 set(0, 'DefaultFigureColor', 'w');
 set(0, 'DefaultAxesColor', 'w');
@@ -18,7 +15,7 @@ fprintf('Loading GRF and HandOfGod Data ...\n');
 
 time = data_grf.Time;
 
-fig1 = figure('Color', 'w', 'Name', 'GRF Prediction vs HandOfGod Compensation', 'Position', [100 100 1000 800]);
+figure('Color', 'w', 'Name', 'GRF Prediction vs HandOfGod Compensation', 'Position', [100 100 1000 800]);
 
 subplot(2,1,1);
 plot(time, data_grf.Right_Fz, 'Color', '#0072BD', 'DisplayName', 'Right Foot Vertical GRF');
@@ -68,3 +65,5 @@ fprintf(fptr, 'Cosine Similarity:    %6.4f\n', cos_sim_tot);
 fprintf(fptr, '\n');
 fclose(fptr);
 fprintf('Report successfully written to %s\n', report_file);
+
+end

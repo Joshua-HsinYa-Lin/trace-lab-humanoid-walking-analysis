@@ -1,6 +1,4 @@
-clear;
-clc;
-close all;
+function plot_GRF(csv_dir)
 
 set(0, 'DefaultFigureColor', 'w');
 set(0, 'DefaultAxesColor', 'w');
@@ -11,12 +9,21 @@ set(0, 'DefaultTextColor', 'k');
 set(0, 'DefaultLineLineWidth', 1.5);
 
 fprintf('Loading GRF and Leg Joint data\n');
+
+grf_file = fullfile(csv_dir, 'grf_data.csv');
+leg_R_file = fullfile(csv_dir, 'interaction_joint_data_right.csv');
+leg_L_file = fullfile(csv_dir, 'interaction_joint_data_left.csv');
+
+if exist(grf_file, 'file') ~= 2 || exist(leg_R_file, 'file') ~= 2 || exist(leg_L_file, 'file') ~= 2
+    error('Required CSV files not found in %s.', csv_dir);
+end
+
 data_grf = readtable('data_csv/grf_data.csv');
 data_leg_R = readtable('data_csv/interaction_joint_data_right.csv');
 data_leg_L = readtable('data_csv/interaction_joint_data_left.csv');
 time = data_grf.Time;
 
-fig1 = figure('Color', 'w', 'Name', 'GRF vs Leg Joint Forces', 'Position', [100 100 1000 900]);
+figure('Color', 'w', 'Name', 'GRF vs Leg Joint Forces', 'Position', [100 100 1000 900]);
 
 subplot(3,1,1);
 plot(time, data_grf.Right_Fx, 'Color', '#0072BD', 'DisplayName', 'Right Foot GRF Forward Backward'); 
@@ -53,3 +60,5 @@ grid on;
 legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
 fprintf('GRF and Leg Joint Forces plotting complete\n');
+
+end
