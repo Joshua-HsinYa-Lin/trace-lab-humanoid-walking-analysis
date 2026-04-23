@@ -40,7 +40,7 @@ if run_plotting
     plot_angles(csv_dir, report_dir);
     plot_hand(csv_dir, report_dir);
     plot_follower(csv_dir, report_dir);
-    plot_GRF(csv_dir);
+    plot_GRF(csv_dir, report_dir);
     plot_GRFvsHOG(csv_dir, report_dir);
     plot_single(csv_dir);        
     plot_single_GRFandLeg(csv_dir);
