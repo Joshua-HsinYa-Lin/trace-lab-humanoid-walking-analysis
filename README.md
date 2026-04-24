@@ -1,14 +1,10 @@
 # TRACE Lab Walking Analysis
 
-
 This project uses MATLAB to extract and analyze biomechanical force and torque data from AnyBody simulation files (.h5). The primary goal is to analyze human interaction forces during a walking task where a helper assists a follower. By evaluating lateral stabilization, vertical weight, and ground reaction forces (GRF), we also compare assisted walking against unassisted single person walking to validate the integrity of the motion capture marker data. We establish physical baselines to train humanoid robots for physical walking assistance. 
 
 ## Terminology Guide
 
-
-
 ![Anatomical Planes and Directions](https://embryology.med.unsw.edu.au/embryology/images/0/04/Human-anatomical-planes.jpg)
-
 
 AnyBody exports data using anatomical reference frames (as shown in the image), here is a simple guide for the variables used in the plots and reports.
 
@@ -46,7 +42,7 @@ AnyBody exports data using anatomical reference frames (as shown in the image), 
 * `/`: The MATLAB scripts.
 * `/data_csv/`: The extracted force and moment data files. (.csv)
 * `/figures/`: The generated interaction plots. (.png)
-* `/reports/`: The text summaries. (.txt)
+* `/reports/`: The statistical summaries. (.txt)
 
 ## Setup
 
@@ -56,22 +52,20 @@ Place the AnyBody inverse dynamics simulation files in the root directory to run
 * `GRF_FullBody_IC_walker_WL_helper_ground_walk_w_rod_03_MarkerTracking.anydata.h5`
 * `FullBody_IC_walk_01_InverseDynamicStudy.anydata.h5`
 
-## Steps
+## Pipeline Execution
 
-**Step 1: Get Data**
-* Run `run_analysis.m` to extract the helper leg data.
-* Run `run_hand.m` to extract the helper arm data.
-* Run `run_follower.m` to extract the follower hand interaction data.
-* Run `run_GRF.m` to extract the ground reaction forces for the foot plates.
-* Run `run_single_hand.m` and `run_single_leg.m` to extract the baseline single person data.
+The entire extraction, plotting, and reporting pipeline has been centralized into `main.m`. This core script utilizes a fault-tolerant fallback architecture, allowing it to dynamically adapt to varying HDF5 internal directory structures and dataset shapes (3xN vs 1D).
 
-**Step 2: Make Plots and Reports**
-* Run `plot_results.m` to graph leg data and write the leg report.
-* Run `plot_hand.m` to graph arm data and write the arm report.
-* Run `plot_follower.m` to overlay follower forces against the helper hands.
-* Run `plot_GRF.m` to compare external ground forces against internal ankle joint loads.
-* Run `plot_single.m` to identify abnormal force spikes by comparing the interaction model to the single person baseline.
-* Run `plot_GRFvsHOG.m` to compare the GRF prediction of leg forces and HandOfGod forces.
+**Step 1: Configuration**
+* Open `main.m`.
+* Verify the input `.h5` file names match your current simulation files.
+* If your AnyBody output directories differ or change in the future, add the new alternative paths to the corresponding path structs (e.g., `leg_paths`, `plate_paths`). The extraction modules will automatically test these paths until a valid dataset is found.
+
+**Step 2: Run the Analysis**
+* In `main.m`, set the toggles `run_extraction = true;` and/or `run_plotting = true;` depending on your required tasks.
+* Run `main.m`.
+
+The master script will sequentially execute the required `run_` extractions followed by the `plot_` generations, bypassing any missing datasets without fatal crashes and writing all `.csv` and `.txt` outputs directly to their assigned folders.
 
 ## Key Findings Summary
 
