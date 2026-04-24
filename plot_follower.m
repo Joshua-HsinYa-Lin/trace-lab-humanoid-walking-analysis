@@ -2,7 +2,7 @@ function plot_follower(csv_dir, report_dir)
 csv_follower = fullfile(csv_dir, 'follower_hand_data.csv');
 csv_helper_R = fullfile(csv_dir, 'interaction_hand_data_right.csv'); 
 csv_helper_L = fullfile(csv_dir, 'interaction_hand_data_left.csv'); 
-report_file = fullfile(report_dir, 'interaction_force_report.md');
+report_file = fullfile(report_dir, 'interaction_force_report.txt');
 
 set(0, 'DefaultFigureColor', 'w');      
 set(0, 'DefaultAxesColor', 'w');        
@@ -12,74 +12,156 @@ set(0, 'DefaultAxesZColor', 'k');
 set(0, 'DefaultTextColor', 'k');        
 set(0, 'DefaultLineLineWidth', 1.5);    
 
-fprintf('Loading data...\n');
+has_F = exist(csv_follower, 'file') == 2;
+has_HR = exist(csv_helper_R, 'file') == 2;
+has_HL = exist(csv_helper_L, 'file') == 2;
+
+if ~has_F
+    fprintf('Missing Follower CSV. Plotting aborted.\n');
+    return;
+end
+
 data_F = readtable(csv_follower);
-data_HR = readtable(csv_helper_R);
-data_HL = readtable(csv_helper_L);
-time = data_F.Time; 
+time = data_F.Time;
+
+fx_F = get_col(data_F, {'Fout_X'});
+fy_F = get_col(data_F, {'Fout_Y'});
+fz_F = get_col(data_F, {'Fout_Z'});
+
+fx_HR = []; 
+fy_HR = []; 
+fz_HR = [];
+if has_HR
+    data_HR = readtable(csv_helper_R);
+    fx_HR = get_col(data_HR, {'Force_WristRadioCarpal_DorsoVolarForce'});
+    fy_HR = get_col(data_HR, {'Force_WristRadioCarpal_ProximoDistalForce'});
+    fz_HR = get_col(data_HR, {'Force_WristRadioCarpal_RadialForce'});
+end
+
+fx_HL = []; 
+fy_HL = []; 
+fz_HL = [];
+if has_HL
+    data_HL = readtable(csv_helper_L);
+    fx_HL = get_col(data_HL, {'Force_WristRadioCarpal_DorsoVolarForce'});
+    fy_HL = get_col(data_HL, {'Force_WristRadioCarpal_ProximoDistalForce'});
+    fz_HL = get_col(data_HL, {'Force_WristRadioCarpal_RadialForce'});
+end
 
 fig1 = figure('Name', 'Full Interaction Analysis', 'Color', 'w', 'Position', [100 100 1000 900]);
 
-subplot(3,1,1);
-plot(time, data_F.Fout_X, 'Color', '#D95319', 'DisplayName', 'Follower (Local X)'); hold on;
-plot(time, data_HR.Force_WristRadioCarpal_DorsoVolarForce, 'Color', '#0072BD', 'LineStyle', '--', 'DisplayName', 'Helper Right (DorsoVolar)'); 
-plot(time, data_HL.Force_WristRadioCarpal_DorsoVolarForce, 'Color', '#77AC30', 'LineStyle', ':', 'DisplayName', 'Helper Left (DorsoVolar)'); 
-title('Follower Forward/Backward Interaction Forces (x-axis)', 'Color', 'k');
+subplot(3,1,1); 
+hold on;
+if ~isempty(fx_F)
+    plot(time, fx_F, 'Color', '#D95319', 'DisplayName', 'Follower (Local X)'); 
+end
+if ~isempty(fx_HR)
+    plot(time, fx_HR, 'Color', '#0072BD', 'LineStyle', '--', 'DisplayName', 'Helper Right (DorsoVolar)'); 
+end
+if ~isempty(fx_HL)
+    plot(time, fx_HL, 'Color', '#77AC30', 'LineStyle', ':', 'DisplayName', 'Helper Left (DorsoVolar)'); 
+end
+title('Follower Forward/Backward Interaction Forces (x-axis)', 'Color', 'k'); 
 ylabel('Force (N)', 'Color', 'k'); 
 grid on;
-legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
-subplot(3,1,2);
-plot(time, data_F.Fout_Z, 'Color', '#D95319', 'DisplayName', 'Follower (Local Y)'); hold on;
-plot(time, data_HR.Force_WristRadioCarpal_ProximoDistalForce, 'Color', '#0072BD', 'LineStyle', '--', 'DisplayName', 'Helper Right (ProximoDistal)'); 
-plot(time, data_HL.Force_WristRadioCarpal_ProximoDistalForce, 'Color', '#77AC30', 'LineStyle', ':', 'DisplayName', 'Helper Left (ProximoDistal)'); 
-title('Up/Down Interaction Forces (y-axis)', 'Color', 'k');
+subplot(3,1,2); 
+hold on;
+if ~isempty(fz_F)
+    plot(time, fz_F, 'Color', '#D95319', 'DisplayName', 'Follower (Local Y)'); 
+end
+if ~isempty(fy_HR)
+    plot(time, fy_HR, 'Color', '#0072BD', 'LineStyle', '--', 'DisplayName', 'Helper Right (ProximoDistal)'); 
+end
+if ~isempty(fy_HL)
+    plot(time, fy_HL, 'Color', '#77AC30', 'LineStyle', ':', 'DisplayName', 'Helper Left (ProximoDistal)'); 
+end
+title('Up/Down Interaction Forces (y-axis)', 'Color', 'k'); 
 ylabel('Force (N)', 'Color', 'k'); 
 grid on;
-legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
 
-subplot(3,1,3);
-plot(time, data_F.Fout_Y, 'Color', '#D95319', 'DisplayName', 'Follower (Local Z)'); hold on;
-plot(time, data_HR.Force_WristRadioCarpal_RadialForce, 'Color', '#0072BD', 'LineStyle', '--', 'DisplayName', 'Helper Right (Radial)'); 
-plot(time, data_HL.Force_WristRadioCarpal_RadialForce, 'Color', '#77AC30', 'LineStyle', ':', 'DisplayName', 'Helper Left (Radial)'); 
-title('Left/Right Interaction Forces (z-axis)', 'Color', 'k');
-ylabel('Force (N)', 'Color', 'k'); xlabel('Time (s)', 'Color', 'k');
+subplot(3,1,3); 
+hold on;
+if ~isempty(fy_F)
+    plot(time, fy_F, 'Color', '#D95319', 'DisplayName', 'Follower (Local Z)'); 
+end
+if ~isempty(fz_HR)
+    plot(time, fz_HR, 'Color', '#0072BD', 'LineStyle', '--', 'DisplayName', 'Helper Right (Radial)'); 
+end
+if ~isempty(fz_HL)
+    plot(time, fz_HL, 'Color', '#77AC30', 'LineStyle', ':', 'DisplayName', 'Helper Left (Radial)'); 
+end
+title('Left/Right Interaction Forces (z-axis)', 'Color', 'k'); 
+ylabel('Force (N)', 'Color', 'k'); 
+xlabel('Time (s)', 'Color', 'k'); 
 grid on;
-legend('Location', 'best', 'Color', 'w', 'TextColor', 'k', 'Box', 'on');
-set(fig1, 'InvertHardcopy', 'off'); 
+
+set(fig1, 'InvertHardcopy', 'off');
+
+names = {}; 
+stats_cell = {}; 
+units = {}; 
+row_idx = 1;
+
+if ~isempty(fx_F) 
+    if ~isempty(fy_F) 
+        if ~isempty(fz_F)
+            names{row_idx} = 'Follower HandOfGod Global Force';
+            sX = get_stats(fx_F, time);
+            sY = get_stats(fy_F, time);
+            sZ = get_stats(fz_F, time);
+            stats_cell{row_idx} = [sX; sY; sZ];
+            units{row_idx} = 'N';
+            row_idx = row_idx + 1;
+        end
+    end
+end
+
+if ~isempty(fx_HR) 
+    if ~isempty(fy_HR) 
+        if ~isempty(fz_HR)
+            names{row_idx} = 'Helper Right Wrist Force (DorsoVolar, ProximoDistal, Radial)';
+            sX = get_stats(fx_HR, time);
+            sY = get_stats(fy_HR, time);
+            sZ = get_stats(fz_HR, time);
+            stats_cell{row_idx} = [sX; sY; sZ];
+            units{row_idx} = 'N';
+            row_idx = row_idx + 1;
+        end
+    end
+end
+
+if ~isempty(fx_HL) 
+    if ~isempty(fy_HL) 
+        if ~isempty(fz_HL)
+            names{row_idx} = 'Helper Left Wrist Force (DorsoVolar, ProximoDistal, Radial)';
+            sX = get_stats(fx_HL, time);
+            sY = get_stats(fy_HL, time);
+            sZ = get_stats(fz_HL, time);
+            stats_cell{row_idx} = [sX; sY; sZ];
+            units{row_idx} = 'N';
+        end
+    end
+end
+
+if ~isempty(names)
+    write_report(report_file, 'Follower Interaction Force Report', names, stats_cell, units);
+end
 fprintf('Full interaction plotting complete!\n');
+end
 
-get_peak = @(x) max(abs(x));
-get_avg = @(x) mean(x);
+function s = get_stats(v, t)
+    t_max_arr = t(v == max(v));
+    t_min_arr = t(v == min(v));
+    s = [mean(v), max(v), t_max_arr(1), min(v), t_min_arr(1)];
+end
 
-fptr = fopen(report_file, 'w');
-fprintf(fptr, 'INTERACTION FORCE SUMMARY\n\n');
-
-fprintf(fptr, 'LATERAL STABILIZATION (Left/Right)\n\n');
-fprintf(fptr, '<img src="../docs/hand directions.jpg" width="400">\n\n');
-fprintf(fptr, 'Follower (Global Y) (Side to side horizontal force)\nPeak: %6.2f N   | Avg: %6.2f N\n', ...
-    get_peak(data_F.Fout_Y), get_avg(data_F.Fout_Y));
-fprintf(fptr, 'Helper Right (Radial) (Force traveling side to side across the wrist joint)\nPeak: %6.2f N   | Avg: %6.2f N\n', ...
-    get_peak(data_HR.Force_WristRadioCarpal_RadialForce), get_avg(data_HR.Force_WristRadioCarpal_RadialForce));
-fprintf(fptr, 'Helper Left (Radial) (Force traveling side to side across the wrist joint)\nPeak: %6.2f N   | Avg: %6.2f N\n\n', ...
-    get_peak(data_HL.Force_WristRadioCarpal_RadialForce), get_avg(data_HL.Force_WristRadioCarpal_RadialForce));
-
-fprintf(fptr, 'VERTICAL WEIGHT SUPPORT (Up/Down)\n');
-fprintf(fptr, 'Follower (Global Z) (Upward or downward force)\nPeak: %6.2f N   | Avg: %6.2f N\n', ...
-    get_peak(data_F.Fout_Z), get_avg(data_F.Fout_Z));
-fprintf(fptr, 'Helper Right (ProximoDistal) (Force traveling along the length of the arm)\nPeak: %6.2f N   | Avg: %6.2f N\n', ...
-    get_peak(data_HR.Force_WristRadioCarpal_ProximoDistalForce), get_avg(data_HR.Force_WristRadioCarpal_ProximoDistalForce));
-fprintf(fptr, 'Helper Left (ProximoDistal) (Force traveling along the length of the arm)\nPeak: %6.2f N   | Avg: %6.2f N\n\n', ...
-    get_peak(data_HL.Force_WristRadioCarpal_ProximoDistalForce), get_avg(data_HL.Force_WristRadioCarpal_ProximoDistalForce));
-
-fprintf(fptr, 'PUSH/PULL DYNAMICS (Forward/Backward)\n');
-fprintf(fptr, 'Follower (Global X)\nPeak: %6.2f N   | Avg: %6.2f N\n', ...
-    get_peak(data_F.Fout_X), get_avg(data_F.Fout_X));
-fprintf(fptr, 'Helper Right (DorsoVolar)\nPeak: %6.2f N   | Avg: %6.2f N\n', ...
-    get_peak(data_HR.Force_WristRadioCarpal_DorsoVolarForce), get_avg(data_HR.Force_WristRadioCarpal_DorsoVolarForce));
-fprintf(fptr, 'Helper Left (DorsoVolar)\nPeak: %6.2f N   | Avg: %6.2f N\n', ...
-    get_peak(data_HL.Force_WristRadioCarpal_DorsoVolarForce), get_avg(data_HL.Force_WristRadioCarpal_DorsoVolarForce));
-fclose(fptr);
-fprintf('Report Written to %s!\n', report_file);
-
+function val = get_col(T, col_names)
+    val = [];
+    for i = 1:length(col_names)
+        if ismember(col_names{i}, T.Properties.VariableNames)
+            val = T.(col_names{i});
+            return;
+        end
+    end
 end

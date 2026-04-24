@@ -1,0 +1,12 @@
+Single Baseline Symmetry Report
+
+Single Baseline Plate 1 Force Report
+  Mean:   235.90 N
+  Max Pos:   769.79 N (t=4.32s)
+  Max Neg:    -0.00 N (t=0.42s)
+
+Single Baseline Plate 2 Force Report
+  Mean:    82.56 N
+  Max Pos:  1274.28 N (t=3.31s)
+  Max Neg:    -0.00 N (t=0.42s)
+

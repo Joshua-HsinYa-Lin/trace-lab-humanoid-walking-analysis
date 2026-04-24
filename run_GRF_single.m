@@ -1,190 +1,79 @@
-function run_GRF_single(inversefile, csv_dir)
-
+function run_GRF_single(inversefile, csv_dir, single_grf_paths)
 output_csv_grf = fullfile(csv_dir, 'grf_data_single.csv');
 fprintf('Start Ground Reaction Force Extraction (Single)\n');
 
 possible_time_paths = {'/Output/Abscissa/t', '/Output/t', '/Output/Model/t'};
 time_data = [];
 for i = 1:length(possible_time_paths)
-    try
+    if verify_h5_path(inversefile, possible_time_paths{i})
         time_data = h5read(inversefile, possible_time_paths{i});
         break; 
-    catch
     end
 end
 
 if isempty(time_data)
-    error('Could not find Time vector in %s.', inversefile);
+    fprintf('Extraction Skipped: Could not find Time vector.\n');
+    return;
 end
 
 ResultsTable = table(time_data(:), 'VariableNames', {'Time'});
 
-% Use GRF Prediction paths for the Single file
-base_path_right = '/Output/_Main/EnvironmentModel/ForcePlates/GRF_Prediction_Right/';
-base_path_left  = '/Output/_Main/EnvironmentModel/ForcePlates/GRF_Prediction_Left/';
-
-try
-    ResultsTable.Plate1_Fx = squeeze(h5read(inversefile, [base_path_right, 'Fx']));
-    ResultsTable.Plate1_Fy = squeeze(h5read(inversefile, [base_path_right, 'Fy']));
-    ResultsTable.Plate1_Fz = squeeze(h5read(inversefile, [base_path_right, 'Fz']));
+fields = fieldnames(single_grf_paths);
+for i = 1:length(fields)
+    plate = fields{i};
+    paths_to_try = single_grf_paths.(plate);
     
-    % Enforce column vectors
-    ResultsTable.Plate1_Fx = ResultsTable.Plate1_Fx(:);
-    ResultsTable.Plate1_Fy = ResultsTable.Plate1_Fy(:);
-    ResultsTable.Plate1_Fz = ResultsTable.Plate1_Fz(:);
-    fprintf('   Saved GRF_Prediction_Right as Plate 1\n');
-catch ME
-    fprintf('   Right GRF Extraction Failed: %s\n', ME.message);
-end
-
-try
-    ResultsTable.Plate2_Fx = squeeze(h5read(inversefile, [base_path_left, 'Fx']));
-    ResultsTable.Plate2_Fy = squeeze(h5read(inversefile, [base_path_left, 'Fy']));
-    ResultsTable.Plate2_Fz = squeeze(h5read(inversefile, [base_path_left, 'Fz']));
-    
-    % Enforce column vectors
-    ResultsTable.Plate2_Fx = ResultsTable.Plate2_Fx(:);
-    ResultsTable.Plate2_Fy = ResultsTable.Plate2_Fy(:);
-    ResultsTable.Plate2_Fz = ResultsTable.Plate2_Fz(:);
-    fprintf('   Saved GRF_Prediction_Left as Plate 2\n');
-catch ME
-    fprintf('   Left GRF Extraction Failed: %s\n', ME.message);
-end
-
-writetable(ResultsTable, output_csv_grf);
-fprintf('GRF Single Extraction Complete -> %s\n', output_csv_grf);
-
-end
-%{
-function run_GRF_single(inversefile, csv_dir)
-output_csv_right = fullfile(csv_dir, 'single_joint_data_right.csv');
-output_csv_left  = fullfile(csv_dir, 'single_joint_data_left.csv');
-output_csv_grf   = fullfile(csv_dir, 'grf_data_single.csv');
-
-sides = {'Right', 'Left'};
-folders_to_scan = {'JointMomentMeasure', 'JointReactionForce'};
-target_joints = {'Hip', 'Knee', 'Ankle'};
-
-inverse_presented = exist(inversefile, 'file');
-if((inverse_presented ~= 2))
-    error('One or both files do not exist. Please check the file paths.');
-else 
-    fprintf("Start Data Extraction\n");
-end
-
-possible_time_paths = {'/Output/Abscissa/t', '/Output/t', '/Output/Model/t'};
-time_data = [];
-for i = 1:length(possible_time_paths)
-    try
-        time_data = h5read(inversefile, possible_time_paths{i});
-        time_path_found = possible_time_paths{i};
-        fprintf('Found Time vector at: %s (%d frames)\n', time_path_found, length(time_data));
-        break; 
-    catch
-    end
-end
-
-if isempty(time_data)
-    error('Could not find time vector. Extraction aborted.');
-end
-
-for s = 1:length(sides)
-    current_side = sides{s};
-    fprintf('\n--- Processing %s Leg ---\n', current_side);
-    
-    base_path = sprintf('/Output/_Main/HumanModel/BodyModel/SelectedOutput/%s/Leg/', current_side);    
-    
-    ResultsTable = table(time_data, 'VariableNames', {'Time'});
-    
-    if strcmp(current_side, 'Right')
-        current_output_csv = output_csv_right;
-    else
-        current_output_csv = output_csv_left;
+    if ~iscell(paths_to_try)
+        paths_to_try = {paths_to_try};
     end
     
-    for f = 1:length(folders_to_scan)
-        current_folder = [base_path, folders_to_scan{f}];
-        try
-            info = h5info(inversefile, current_folder);  
-            
-            for i = 1:length(info.Datasets)
-                var_name = info.Datasets(i).Name;
-                
-                is_relevant = false;
-                for k = 1:length(target_joints)
-                    if contains(var_name, target_joints{k}, 'IgnoreCase', true)
-                        is_relevant = true;
-                        break;
-                    end
+    for k = 1:length(paths_to_try)
+        target_path = paths_to_try{k};
+        
+        if verify_h5_path(inversefile, target_path)
+            try
+                f_raw = h5read(inversefile, target_path);
+                if ndims(f_raw) == 3
+                    f_raw = reshape(f_raw, size(f_raw, 1), [])';
                 end
                 
-                if is_relevant
-                    full_path = [current_folder, '/', var_name];
-                    data = h5read(inversefile, full_path);
-                    
-                    if contains(folders_to_scan{f}, 'Moment')
-                        col_name = ['Moment_', var_name];
+                if size(f_raw, 1) == length(time_data) || size(f_raw, 2) == length(time_data)
+                    if size(f_raw, 1) == 3
+                        ResultsTable.(sprintf('%s_Fx', plate)) = f_raw(1, :)';
+                        ResultsTable.(sprintf('%s_Fy', plate)) = f_raw(3, :)'; 
+                        ResultsTable.(sprintf('%s_Fz', plate)) = f_raw(2, :)'; 
                     else
-                        col_name = ['Force_', var_name];
+                        ResultsTable.(sprintf('%s_Fx', plate)) = f_raw(:, 1);
+                        ResultsTable.(sprintf('%s_Fy', plate)) = f_raw(:, 3); 
+                        ResultsTable.(sprintf('%s_Fz', plate)) = f_raw(:, 2); 
                     end
-                    col_name = matlab.lang.makeValidName(col_name);
-                    
-                    if length(data) == length(time_data)
-                        ResultsTable.(col_name) = data;
-                        fprintf('   Saved: %s\n', col_name);
-                    else
-                        fprintf('Skipping %s: Size mismatch (%d vs %d)\n', ...
-                            col_name, length(data), length(time_data));
-                    end
+                    fprintf('   Saved %s data (matrix)\n', plate);
+                    break;
                 end
+            catch
             end
-        catch ME
-            fprintf('Could not process folder: %s\n', current_folder);
-            fprintf('   Error: %s\n', ME.message);
-        end
-    end
-    
-    fprintf('Writing %s leg data to %s ...\n', current_side, current_output_csv);
-    writetable(ResultsTable, current_output_csv);
-    fprintf('Done writing %s leg!\n', current_side);
-end
-
-fprintf('\n--- Processing Ground Reaction Forces (Force Plates) ---\n');
-GRFTable = table(time_data, 'VariableNames', {'Time'});
-
-force_plates = {'Plate1', 'Plate2', 'Plate3', 'Plate4'}; 
-found_any_plate = false;
-
-for p = 1:length(force_plates)
-    plate_name = force_plates{p};
-    dataset_path = sprintf('/Output/_Main/EnvironmentModel/ForcePlates/%s/ForcePlate/Force/Fout', plate_name);
-    
-    try
-        fout_data = h5read(inversefile, dataset_path);
-        
-        if size(fout_data, 1) == 3
-            GRFTable.([plate_name, '_Fx']) = fout_data(1, :)';
-            GRFTable.([plate_name, '_Fy']) = fout_data(2, :)';
-            GRFTable.([plate_name, '_Fz']) = fout_data(3, :)';
-        elseif size(fout_data, 2) == 3
-            GRFTable.([plate_name, '_Fx']) = fout_data(:, 1);
-            GRFTable.([plate_name, '_Fy']) = fout_data(:, 2);
-            GRFTable.([plate_name, '_Fz']) = fout_data(:, 3);
         end
         
-        fprintf('   Saved: %s GRF (Fx, Fy, Fz)\n', plate_name);
-        found_any_plate = true;
-    catch
+        path_x = fullfile(target_path, 'Fx');
+        path_y = fullfile(target_path, 'Fy');
+        path_z = fullfile(target_path, 'Fz');
+        
+        if verify_h5_path(inversefile, path_x)
+            data_x = h5read(inversefile, path_x);
+            data_y = h5read(inversefile, path_y);
+            data_z = h5read(inversefile, path_z);
+            
+            ResultsTable.(sprintf('%s_Fx', plate)) = data_x(:);
+            ResultsTable.(sprintf('%s_Fy', plate)) = data_y(:);
+            ResultsTable.(sprintf('%s_Fz', plate)) = data_z(:);
+            fprintf('   Saved %s data (Separate XYZ)\n', plate);
+            break;
+        end
     end
 end
 
-if found_any_plate
-    fprintf('Writing GRF data to %s ...\n', output_csv_grf);
-    writetable(GRFTable, output_csv_grf);
-else
-    fprintf('   No Force Plate data found. Ensure the paths are correct.\n');
+if width(ResultsTable) > 1
+    writetable(ResultsTable, output_csv_grf);
+    fprintf('GRF Single Extraction Complete -> %s\n', output_csv_grf);
 end
-
-fprintf('\nAll Data Extraction Complete!\n');
 end
-%}

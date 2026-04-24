@@ -1,0 +1,12 @@
+Human Leg Force Analysis
+
+Right Hip Flexion Torque Force Report
+  Mean:    -6.27 Nm
+  Max Pos:    22.95 Nm (t=2.10s)
+  Max Neg:   -37.93 Nm (t=3.95s)
+
+Right Hip Vertical Load Force Report
+  Mean:  1252.01 N
+  Max Pos:  2598.22 N (t=4.01s)
+  Max Neg:    73.15 N (t=3.40s)
+

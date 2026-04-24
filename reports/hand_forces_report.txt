@@ -1,0 +1,42 @@
+Hand Assistance Report
+
+Right Elbow Flexion Torque Force Report
+  Mean:    -8.75 Nm
+  Max Pos:    33.79 Nm (t=4.39s)
+  Max Neg:   -46.00 Nm (t=3.92s)
+
+Right Elbow Vertical Load Force Report
+  Mean:    -5.64 N
+  Max Pos:    23.87 N (t=4.37s)
+  Max Neg:   -71.94 N (t=4.16s)
+
+Right Wrist Flexion Torque Force Report
+  Mean:   -49.92 Nm
+  Max Pos:    13.07 Nm (t=4.30s)
+  Max Neg:  -138.40 Nm (t=5.14s)
+
+Right Wrist Vertical Load Force Report
+  Mean:  -130.63 N
+  Max Pos:   139.90 N (t=4.12s)
+  Max Neg:  -441.98 N (t=5.14s)
+
+Left Elbow Flexion Torque Force Report
+  Mean:     0.36 Nm
+  Max Pos:    32.60 Nm (t=5.14s)
+  Max Neg:   -36.47 Nm (t=5.13s)
+
+Left Elbow Vertical Load Force Report
+  Mean:     5.55 N
+  Max Pos:    47.13 N (t=5.00s)
+  Max Neg:   -42.61 N (t=5.01s)
+
+Left Wrist Flexion Torque Force Report
+  Mean:    -0.15 Nm
+  Max Pos:     1.10 Nm (t=5.14s)
+  Max Neg:    -2.22 Nm (t=5.13s)
+
+Left Wrist Vertical Load Force Report
+  Mean:     3.99 N
+  Max Pos:     7.70 N (t=5.14s)
+  Max Neg:     2.92 N (t=2.38s)
+

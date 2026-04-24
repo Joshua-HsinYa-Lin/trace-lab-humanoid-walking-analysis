@@ -1,0 +1,22 @@
+Kinematics Report
+
+Right Hip Flexion Angle Force Report
+  Mean:    -9.50 deg
+  Max Pos:     7.86 deg (t=2.34s)
+  Max Neg:   -22.55 deg (t=3.19s)
+
+Right Knee Flexion Angle Force Report
+  Mean:    17.82 deg
+  Max Pos:    64.83 deg (t=3.42s)
+  Max Neg:     4.69 deg (t=3.75s)
+
+Right Ankle Plantar Angle Force Report
+  Mean:    -8.97 deg
+  Max Pos:     5.59 deg (t=3.82s)
+  Max Neg:   -21.77 deg (t=3.22s)
+
+Right Elbow Flexion Angle Force Report
+  Mean:    18.04 deg
+  Max Pos:    22.25 deg (t=4.19s)
+  Max Neg:    15.49 deg (t=2.65s)
+

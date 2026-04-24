@@ -1,78 +1,74 @@
-function run_follower(inversefile, csv_dir)
-output_csv = fullfile(csv_dir, 'follower_hand_data.csv');
+function run_follower(inversefile, csv_dir, follower_paths)
 
-if exist(inversefile, 'file') ~= 2
-    error('File not found. Please check the file path.');
-end
+output_csv = fullfile(csv_dir, 'follower_hand_data.csv');
 fprintf('Start Follower Hand Data Extraction\n');
 
 possible_time_paths = {'/Output/Abscissa/t', '/Output/t', '/Output/Model/t'};
 time_data = [];
 
 for i = 1:length(possible_time_paths)
-    try
+    if verify_h5_path(inversefile, possible_time_paths{i})
         time_data = h5read(inversefile, possible_time_paths{i});
         fprintf('Found Time vector (%d frames)\n', length(time_data));
         break; 
-    catch
     end
 end
 
 if isempty(time_data)
-    error('Could not find Time vector.');
+    fprintf('Extraction Skipped: Could not find Time vector.\n');
+    return;
 end
-ResultsTable = table(time_data, 'VariableNames', {'Time'});
 
-fout_path = '/Output/FollowerHand/HandOfGod/Fout';
-try
-    fout_data = h5read(inversefile, fout_path)';
-    if size(fout_data, 1) == length(time_data)
-        ResultsTable.Fout_X = fout_data(:, 1);
-        ResultsTable.Fout_Y = fout_data(:, 2);
-        ResultsTable.Fout_Z = fout_data(:, 3);
-        fprintf('Saved: Fout Forces (X, Y, Z)\n');
-    else
-        fprintf('Skipped Fout Forces: Size mismatch\n');
+ResultsTable = table(time_data(:), 'VariableNames', {'Time'});
+
+fields = fieldnames(follower_paths);
+for i = 1:length(fields)
+    var_target = fields{i};
+    paths_to_try = follower_paths.(var_target);
+    
+    if ~iscell(paths_to_try)
+        paths_to_try = {paths_to_try};
     end
-catch ME
-    fprintf('Error reading Fout Forces: %s\n', ME.message);
-end
-
-force_path = '/Output/FollowerHand/HandOfGod/RefFrameOutput/F';
-try
-    force_data_raw = h5read(inversefile, force_path);
-    force_data = squeeze(force_data_raw(:, 1, :)); 
-    force_data = force_data';
-    if size(force_data, 1) == length(time_data)
-        ResultsTable.LocalForce_X = force_data(:, 1);
-        ResultsTable.LocalForce_Y = force_data(:, 2);
-        ResultsTable.LocalForce_Z = force_data(:, 3);
-        fprintf('Saved: Local Follower Forces (X, Y, Z)\n');
-    else
-        fprintf('Skipped Local Follower Forces: Size mismatch\n');
+    
+    for k = 1:length(paths_to_try)
+        target_path = paths_to_try{k};
+        
+        if verify_h5_path(inversefile, target_path)
+            data_raw = h5read(inversefile, target_path);
+            
+            if ndims(data_raw) == 3
+                data = reshape(data_raw, size(data_raw, 1), [])';
+            else
+                data = data_raw';
+            end
+            
+            if strcmp(var_target, 'Fout')
+                prefix = 'Fout';
+            elseif strcmp(var_target, 'F')
+                prefix = 'LocalForce';
+            elseif strcmp(var_target, 'M')
+                prefix = 'LocalMoment';
+            end
+            
+            if size(data, 1) == length(time_data)
+                ResultsTable.(sprintf('%s_X', prefix)) = data(:, 1);
+                ResultsTable.(sprintf('%s_Y', prefix)) = data(:, 2);
+                ResultsTable.(sprintf('%s_Z', prefix)) = data(:, 3);
+                fprintf('   Saved: %s from %s\n', prefix, target_path);
+                break;
+            end
+        end
     end
-catch ME
-    fprintf('Error reading Local Follower Forces: %s\n', ME.message);
 end
 
-moment_path = '/Output/FollowerHand/HandOfGod/RefFrameOutput/M';
-try
-    moment_data_raw = h5read(inversefile, moment_path);
-    moment_data = squeeze(moment_data_raw(:, 1, :));
-    moment_data = moment_data';
-    if size(moment_data, 1) == length(time_data)
-        ResultsTable.LocalMoment_X = moment_data(:, 1);
-        ResultsTable.LocalMoment_Y = moment_data(:, 2);
-        ResultsTable.LocalMoment_Z = moment_data(:, 3);
-        fprintf('Saved: Local Follower Moments (X, Y, Z)\n');
-    else
-        fprintf('Skipped Local Follower Moments: Size mismatch\n');
-    end
-catch ME
-    fprintf('Error reading Local Follower Moments: %s\n', ME.message);
+if width(ResultsTable) > 1
+    window_size = 15; 
+    ResultsTable{:, 2:end} = smoothdata(ResultsTable{:, 2:end}, 'sgolay', window_size);
+    writetable(ResultsTable, output_csv);
+    fprintf('Follower hand data written to %s\n', output_csv);
+else
+    fprintf('No Follower data extracted.\n');
 end
 
-fprintf('Writing Follower hand data to %s\n', output_csv);
-writetable(ResultsTable, output_csv);
 fprintf('\nFollower Data Extraction Complete\n');
 end
