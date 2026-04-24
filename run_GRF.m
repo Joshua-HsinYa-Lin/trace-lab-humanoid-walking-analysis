@@ -1,4 +1,4 @@
-function run_GRF(inversefile, output_csv)
+function run_GRF(inversefile, output_csv, plate_paths)
 
 fprintf('Start Ground Reaction Force Extraction (Assisted)\n');
 
@@ -18,34 +18,43 @@ end
 
 ResultsTable = table(time_data(:), 'VariableNames', {'Time'});
 
-% Point directly to the Fout datasets
-plate1_path = '/Output/_Main/EnvironmentModel/ForcePlates/Plate1/ForcePlate/Force/Fout';
-plate2_path = '/Output/_Main/EnvironmentModel/ForcePlates/Plate2/ForcePlate/Force/Fout';
-
-try
-    % Read the entire 3xN matrix at once
-    f1_raw = h5read(inversefile, plate1_path);
+fields = fieldnames(plate_paths);
+for i = 1:length(fields)
+    side = fields{i};
+    target_path = plate_paths.(side);
     
-    % Separate the rows into respective columns (Row 1=X, Row 2=Z, Row 3=Y)
-    ResultsTable.Right_Fx = f1_raw(1, :)';
-    ResultsTable.Right_Fy = f1_raw(3, :)'; 
-    ResultsTable.Right_Fz = f1_raw(2, :)'; 
-    fprintf('   Saved Plate 1 data as Right Leg\n');
-catch ME
-    fprintf('   Plate 1 Extraction Failed: %s\n', ME.message);
-end
-
-try
-    % Read the entire 3xN matrix at once
-    f2_raw = h5read(inversefile, plate2_path);
+    if verify_h5_path(inversefile, target_path)
+        try
+            f_raw = h5read(inversefile, target_path);
+            ResultsTable.(sprintf('%s_Fx', side)) = f_raw(1, :)';
+            ResultsTable.(sprintf('%s_Fy', side)) = f_raw(3, :)'; 
+            ResultsTable.(sprintf('%s_Fz', side)) = f_raw(2, :)'; 
+            fprintf('   Saved %s data\n', side);
+            continue;
+        catch
+        end
+    end
     
-    % Separate the rows into respective columns
-    ResultsTable.Left_Fx = f2_raw(1, :)';
-    ResultsTable.Left_Fy = f2_raw(3, :)';
-    ResultsTable.Left_Fz = f2_raw(2, :)';
-    fprintf('   Saved Plate 2 data as Left Leg\n');
-catch ME
-    fprintf('   Plate 2 Extraction Failed: %s\n', ME.message);
+    path_x = [target_path, 'Fx'];
+    path_y = [target_path, 'Fy'];
+    path_z = [target_path, 'Fz'];
+    
+    if ~endsWith(target_path, '/') && ~verify_h5_path(inversefile, path_x)
+        path_x = [target_path, '/Fx'];
+        path_y = [target_path, '/Fy'];
+        path_z = [target_path, '/Fz'];
+    end
+
+    if verify_h5_path(inversefile, path_x)
+        ResultsTable.(sprintf('%s_Fx', side)) = squeeze(h5read(inversefile, path_x));
+        ResultsTable.(sprintf('%s_Fy', side)) = squeeze(h5read(inversefile, path_y));
+        ResultsTable.(sprintf('%s_Fz', side)) = squeeze(h5read(inversefile, path_z));
+        
+        ResultsTable.(sprintf('%s_Fx', side)) = ResultsTable.(sprintf('%s_Fx', side))(:);
+        ResultsTable.(sprintf('%s_Fy', side)) = ResultsTable.(sprintf('%s_Fy', side))(:);
+        ResultsTable.(sprintf('%s_Fz', side)) = ResultsTable.(sprintf('%s_Fz', side))(:);
+        fprintf('   Saved %s data\n', side);
+    end
 end
 
 writetable(ResultsTable, output_csv);
