@@ -1,0 +1,30 @@
+Ground Reaction Force Report - Lin30
+
+Right Foot Force Report (X, Y, Z)
+  Direction X:
+    Mean:     8.67 N
+    Max Pos:    30.43 N (t=6.32s)
+    Max Neg:   -17.75 N (t=8.29s)
+  Direction Y:
+    Mean:    -3.50 N
+    Max Pos:    25.23 N (t=6.12s)
+    Max Neg:   -51.04 N (t=7.57s)
+  Direction Z:
+    Mean:   286.61 N
+    Max Pos:   670.60 N (t=7.99s)
+    Max Neg:    -0.00 N (t=3.67s)
+
+Left Foot Force Report (X, Y, Z)
+  Direction X:
+    Mean:   -13.46 N
+    Max Pos:    16.14 N (t=3.66s)
+    Max Neg:   -31.11 N (t=7.92s)
+  Direction Y:
+    Mean:    -1.25 N
+    Max Pos:    35.75 N (t=4.77s)
+    Max Neg:   -39.25 N (t=3.60s)
+  Direction Z:
+    Mean:   378.72 N
+    Max Pos:   676.17 N (t=4.35s)
+    Max Neg:    -0.00 N (t=5.18s)
+
