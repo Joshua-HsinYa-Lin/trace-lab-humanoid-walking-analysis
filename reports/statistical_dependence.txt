@@ -1,12 +1,7 @@
 STATISTICAL DEPENDENCE
 
-RIGHT LEG GRF vs HAND OF GOD
-Correlation (r):      -0.3111
-R squared:            0.0968
-Cosine Similarity:    -0.0224
-
-TOTAL GRF (Right + Left) vs HAND OF GOD
-Correlation (r):      -0.3899
-R squared:            0.1520
-Cosine Similarity:    -0.0604
+RIGHT LEG VERTICAL GRF vs HOG VERTICAL
+Correlation (r):      0.4672
+R squared:            0.2182
+Cosine Similarity:    0.7887
 

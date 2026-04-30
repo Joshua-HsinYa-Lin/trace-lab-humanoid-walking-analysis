@@ -1,0 +1,30 @@
+Ground Reaction Force Report - Both40
+
+Right Foot Force Report (X, Y, Z)
+  Direction X:
+    Mean:    10.06 N
+    Max Pos:    31.77 N (t=6.32s)
+    Max Neg:   -14.83 N (t=8.29s)
+  Direction Y:
+    Mean:    -4.33 N
+    Max Pos:    29.29 N (t=6.12s)
+    Max Neg:   -49.87 N (t=7.57s)
+  Direction Z:
+    Mean:   297.94 N
+    Max Pos:   681.90 N (t=7.99s)
+    Max Neg:    -0.00 N (t=3.67s)
+
+Left Foot Force Report (X, Y, Z)
+  Direction X:
+    Mean:   -12.95 N
+    Max Pos:    16.64 N (t=3.66s)
+    Max Neg:   -36.86 N (t=7.91s)
+  Direction Y:
+    Mean:    -0.68 N
+    Max Pos:    39.15 N (t=4.75s)
+    Max Neg:   -40.16 N (t=3.60s)
+  Direction Z:
+    Mean:   379.81 N
+    Max Pos:   689.79 N (t=4.35s)
+    Max Neg:    -0.00 N (t=5.18s)
+

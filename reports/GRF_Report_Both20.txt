@@ -1,4 +1,4 @@
-Ground Reaction Force Report
+Ground Reaction Force Report - Both20
 
 Right Foot Force Report (X, Y, Z)
   Direction X:
